@@ -4,11 +4,30 @@ from collections import Counter
 from dataclasses import dataclass
 from fractions import Fraction
 
-PARSER_VERSION = "explicit-rational-v1"
+PARSER_VERSION = "explicit-rational-v2"
 NUMBER = r"[+-]?(?:(?:[0-9]{1,3}(?:,[0-9]{3})+|[0-9]+)(?:\.[0-9]+)?|\.[0-9]+)"
 RATIONAL = rf"{NUMBER}(?:\s*/\s*{NUMBER})?"
 BOX = re.compile(r"\\boxed\{((?:[^{}]|\{[^{}]*\})*)\}")
-MARKER = re.compile(r"(?im)\b(?:final\s+answer|answer)\s*(?::|=|\bis\b)\s*([^\n]+)")
+MARKER = re.compile(r"(?im)\b(?:final\s+(?:numerical\s+)?answer|answer)\s*(?::|=|\bis\b\s*:?)\s*(?:(?:\*\*|__|`)\s*)?")
+MATH_WRAPPERS = ((r"\(", r"\)"), (r"\[", r"\]"), ("$$", "$$"), ("$", "$"))
+
+
+def box_span(text, box):
+    """Include a matching standard math wrapper around this box, if present."""
+    for opening, closing in MATH_WRAPPERS:
+        before = re.search(re.escape(opening) + r"\s*$", text[:box.start()])
+        after = re.match(r"\s*" + re.escape(closing), text[box.end():])
+        if before and after:
+            return before.start(), box.end() + after.end()
+    return box.start(), box.end()
+
+
+def ambiguous_box_suffix(suffix):
+    # Numbers in ordinary trailing prose are not additional predictions. Reject
+    # direct alternatives/arithmetic instead; explicit answer markers are checked
+    # independently below, wherever they occur in the response.
+    return bool(re.match(rf"\s*(?:{RATIONAL}|(?:[,/+*=<>-]|and\b|then\b|equals\b)\s*{RATIONAL})", suffix, re.I)
+                or re.search(r"\bor\b", suffix, re.I))
 
 
 def number(text):
@@ -40,17 +59,28 @@ def extract(text):
     values = []
     try:
         values.extend(number(match.group(1)) for match in boxes)
-        if boxes and re.search(r"[0-9]|\bor\b", text[boxes[-1].end():], re.I):
+        spans = [box_span(text, box) for box in boxes]
+        if boxes and ambiguous_box_suffix(text[spans[-1][1]:]):
             raise ValueError("Ambiguous text after boxed answer")
-        # Mask boxes before finding other explicit claims, but retain line positions.
-        masked = BOX.sub("BOXVALUE", text)
+        # Mask entire wrapped boxes so an introduction may end on another line.
+        # The sentinel must not be confused with literal text in a response.
+        sentinel = "BOXVALUE"
+        while sentinel in text:
+            sentinel += "_"
+        masked = text
+        for start, end in reversed(spans):
+            masked = masked[:start] + sentinel + masked[end:]
         for match in MARKER.finditer(masked):
-            claim = match.group(1).strip()
-            if claim.startswith("BOXVALUE"):
-                claim = claim[len("BOXVALUE"):].strip()
-                # A box may be followed by words, but not competing numbers.
-                if re.search(r"[0-9]", claim):
-                    raise ValueError("Multiple numbers in explicit claim")
+            claim = masked[match.end():].split("\n", 1)[0].strip().strip("*$` ")
+            if claim.startswith(sentinel):
+                claim = claim[len(sentinel):].strip()
+                if ambiguous_box_suffix(claim):
+                    raise ValueError("Ambiguous boxed claim")
+                continue
+            # These describe an answer rather than asserting another value, e.g.
+            # "the final answer is accurate:" before a later displayed box.
+            if boxes and re.search(r"\bis\b", match.group(), re.I) and re.match(
+                    r"(?:accurate|consistent|derived)\b", claim, re.I):
                 continue
             claim = claim.strip("*$` ")
             # Permit prose suffixes/units after a clearly marked numeric answer.
@@ -72,7 +102,7 @@ def extract(text):
     if len(set(values)) != 1:
         return Prediction(None, "conflicting_answers", False)
     compliant = (len(boxes) == 1 and bool(re.fullmatch(r"[+-]?[0-9]+(?:\.[0-9]+)?", boxes[0].group(1).strip()))
-                 and not text[boxes[0].end():].strip())
+                 and bool(re.fullmatch(r"\s*[.!]?\s*", text[spans[0][1]:])))
     return Prediction(values[0], "valid", compliant)
 
 
