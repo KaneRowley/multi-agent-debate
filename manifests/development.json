@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "split": "train",
+  "dataset_revision": "3101c7d5072418e28b9008a6636bde82a006892c",
+  "source_sha256": "17f347dc51477c50d4efb83959dbb7c56297aba886e5544ee2aaed3024813465",
+  "selection_version": "sha256-rank-v1",
+  "exposure": null,
+  "questions": [
+    {
+      "id": "gsm8k/train/7288",
+      "index": 7288,
+      "question": "A boat is traveling across a square lake at 10 MPH. It takes 2 hours to go across the length of the lake. It then travels the whole width of the lake at the same speed, which takes 30 minutes. How many square miles is the lake?",
+      "question_sha256": "d14e2de50b9ea8e881698501b82a8a2cc837efd36e57abe7b21d7073c869154a"
+    },
+    {
+      "id": "gsm8k/train/2107",
+      "index": 2107,
+      "question": "Rhett has been late on two of his monthly rent payments, but his landlord does not charge late fees and so he will be able to pay their total cost with 3/5 of his next month's salary after taxes. If he is currently paid $5000 per month and has to pay 10% tax, calculate his rent expense per month?",
+      "question_sha256": "c6adc595faa65df31be43584edb4d00978dfcc74042c89441b68d882158431b3"
+    },
+    {
+      "id": "gsm8k/train/3825",
+      "index": 3825,
+      "question": "There were 37 jellybeans in a jar. Pat removed 15 of them. Pat then added 5 of the removed jellybeans back in, and then removed 4 more. How many jellybeans are now in the jar?",
+      "question_sha256": "224bfe86685cdfd06fe929526d0087d23d3c95f07ef9df6761feb0d651848aae"
+    },
+    {
+      "id": "gsm8k/train/6505",
+      "index": 6505,
+      "question": "Tatuya, Ivanna, and Dorothy took a quiz together. Tatuya scored twice as much as Ivanna, and Ivanna scored 3/5 times as many marks as Dorothy. If Dorothy scored 90 marks, calculate the average marks scored by the three.",
+      "question_sha256": "fb182683afee4f34f88e6d4047e77fa37dc4aed14a4dbb0f84c546cc55c7c884"
+    },
+    {
+      "id": "gsm8k/train/5837",
+      "index": 5837,
+      "question": "Harold's fancy wrapping paper can wrap 5 shirt boxes or 3 XL boxes.  For the upcoming holiday, he has 20 shirt boxes to wrap and 12 XL boxes to wrap.  If each roll of wrapping paper costs $4.00 per roll, how much will he spend to wrap all of the boxes?",
+      "question_sha256": "af8a1a2e4f2c9d8984973bb622b38026b219a0ee759c1629d57fd636bb0ef2ea"
+    },
+    {
+      "id": "gsm8k/train/3969",
+      "index": 3969,
+      "question": "The teacher decided to rewards his students with extra recess on report card day if they got good grades. Students normally get 20 minutes for recess. He told the students that every A got them 2 extra minutes of recess. Every B got them one extra minute. Every C got them zero extra minutes, but every D got them 1 less minute. When report cards came out there were 10 As, 12 Bs, 14Cs, and 5Ds. In total, how much recess would the students get that day?",
+      "question_sha256": "492d1bf1cfd26cb27935d5c429a24a31079fb228c78d1b0eb158f83996e157b8"
+    },
+    {
+      "id": "gsm8k/train/5939",
+      "index": 5939,
+      "question": "William's class set a goal each week of the number of cans of food that is to be collected. On the first day, 20 cans were collected. Then the number of cans increased by 5 each day. If they collected 5 days a week to reach their goal, how many cans of food was their goal per week?",
+      "question_sha256": "3ff1d21d43c7f8708e8d942374e2c52d1da1438554cb92b1a5504a2f03d54bbf"
+    },
+    {
+      "id": "gsm8k/train/1559",
+      "index": 1559,
+      "question": "Maci is planning for the new school year and goes to the store to buy pens. She needs ten blue pens and 15 red pens. If a blue pen costs ten cents each and a red pen costs twice as much as the blue pen, how much money does Maci pay for the pens?",
+      "question_sha256": "6bc12a81e5f27786381fa8ed645dc07bf750290a7a89044e7b2877f43bb292b2"
+    },
+    {
+      "id": "gsm8k/train/2369",
+      "index": 2369,
+      "question": "Jason has a carriage house that he rents out.  He’s charging $50.00 per day or $500.00 for 14 days.  Eric wants to rent the house for 20 days.  How much will it cost him?",
+      "question_sha256": "6bf19b00cb712fc502f34bd5e3586c6ad2223cfd4fc80f1381bbcb0774614c03"
+    },
+    {
+      "id": "gsm8k/train/7387",
+      "index": 7387,
+      "question": "Jose threatened to withhold 20% of Amanda's pay if she does not finish her sales report by midnight. If Amanda makes $50.00 an hour and works for 10 hours a day, how much money will she receive if she does not finish the sales report by midnight?",
+      "question_sha256": "b7be35404c1ac867ad2fb4d8503ec7d5b90552eafce48d2a8f39e7a7317f256a"
+    },
+    {
+      "id": "gsm8k/train/2940",
+      "index": 2940,
+      "question": "Chrystal’s vehicle speed is 30 miles per hour. Ascending the mountain decreases its speed by fifty percent, and descending the mountain increases its speed by twenty percent. If the distance going to the top of the mountain is 60 miles and the distance going down to the foot of the mountain is 72 miles, how many hours will Crystal have to pass the whole mountain?",
+      "question_sha256": "4f03336ead1a05a21bc077ed8042635dfeded90b55f1abaa50deb6682ec53b27"
+    },
+    {
+      "id": "gsm8k/train/1178",
+      "index": 1178,
+      "question": "Oula and Tona work for a delivery service company, supplying different parts of their state with milk products. They are paid $100 for each delivery made in a day. In a particular month, Oula made 96 deliveries while Tona made 3/4 times as many deliveries as Oula. Calculate their difference in pay that month.",
+      "question_sha256": "cdbb54ec3758d7d8cf771f80b08b0de700e607b13491e7e87c5cebdca66436b7"
+    },
+    {
+      "id": "gsm8k/train/5689",
+      "index": 5689,
+      "question": "If a bunny comes out of its burrow 3 times per minute, calculate the combined number of times 20 bunnies at the same pace will have come out of their burrows in 10 hours.",
+      "question_sha256": "e5f55bae249ce392c3cfb15319fd27cc5d3ef0323d226f1e8ab17f1078596d47"
+    },
+    {
+      "id": "gsm8k/train/3027",
+      "index": 3027,
+      "question": "Mary has a mystery book library. She started with 72 mystery books at the beginning of the year. She joined a book club that sent her 1 book each month of the year. She went to a bookstore halfway through the year and bought 5 more books, then bought 2 books at yard sales later. Her daughter gave her another book for her birthday, and her mother gave her a series of 4 books when Mary visited her. She donated 12 books she didn't want to read again to a charity shop and sold 3 to a used book store. How many books did she have at the end of the year?",
+      "question_sha256": "67c27d951251aee475c088d4a22b433c5e660ac7530795797b885bb2227a4bf9"
+    },
+    {
+      "id": "gsm8k/train/3618",
+      "index": 3618,
+      "question": "Maurice is getting $2 for every finished task. And for every 10 tasks finished, he receives a $6 bonus. How much money would Maurice make for finishing 30 tasks?",
+      "question_sha256": "5db3083a4ac9650ea22efcd204499e2a53f57c4f144a487faef786b414505a05"
+    },
+    {
+      "id": "gsm8k/train/3587",
+      "index": 3587,
+      "question": "There were 140 kids in the junior prom. Of those, a fourth of them were dancers. Of the dancers, 25 danced the slow dance. How many of the dancer students did not slow dance?",
+      "question_sha256": "0b60fc9b8d45c2eaac2cd9f50ef7a13b1c54abb217855fbdd7d89ae8dc8a8b9b"
+    },
+    {
+      "id": "gsm8k/train/1191",
+      "index": 1191,
+      "question": "Wally buys bears at the park. A bear is priced at $4.00 for the first bear and a discount of 50 cents per bear is given after that. How much does Wally pay for 101 bears?",
+      "question_sha256": "ce5b49ab2225f5b5519aa3e395ec3a3eb3e2ae1cf3a0f606a6730acbeeebc809"
+    },
+    {
+      "id": "gsm8k/train/2762",
+      "index": 2762,
+      "question": "Henry drinks 15 bottles of kombucha every month.  Each bottle costs $3.00 and is eligible for a cash refund of $0.10 per bottle when he takes it to a recycling center.  After 1 year, how many bottles of kombucha will he be able to buy after he receives his cash refund?",
+      "question_sha256": "e4fe3031a266e04e80166799e8dc5ccc74347b81e7ae17fb4ae437b196dde684"
+    },
+    {
+      "id": "gsm8k/train/7149",
+      "index": 7149,
+      "question": "Hillary always buys the Wednesday, Thursday and Friday editions of the local newspaper for $0.50 each.  On Sunday, she spends $2.00 to get that copy.  How much does she spend on the newspaper over 8 weeks?",
+      "question_sha256": "629c8270b354783545ba1d62fb095dd927c88d18e50b65a58043e1ff8ced779b"
+    },
+    {
+      "id": "gsm8k/train/860",
+      "index": 860,
+      "question": "Earl has $90; Fred has $48; Greg has $36. Earl owes Fred $28. Fred owes Greg $32. Greg owes Earl $40. When all debts are paid, how much will Greg and Earl have together in dollars?",
+      "question_sha256": "3100694cbfadb7af095d1673c029ed95fe2cb5ba4229adab25a737c347cb9c89"
+    },
+    {
+      "id": "gsm8k/train/2912",
+      "index": 2912,
+      "question": "Alex is stacking his books in a pyramid. Each level of the pyramid has 80% as many books as the number of books in the previous level. If he makes four levels and the top level has 64 books, how many books are in the pyramid in total?",
+      "question_sha256": "d8a1c08fec9780e95a952f19cd469a1be6ee14e9f3be15d55e27d7619e805732"
+    },
+    {
+      "id": "gsm8k/train/2149",
+      "index": 2149,
+      "question": "Ocho has 8 friends and half are girls. His friends who are boys like to play theater with him. How many boys play theater with him?",
+      "question_sha256": "bb5f59fab18e7c29f2cc44e9d227766dec7238c440c9355d355e823088d9945d"
+    },
+    {
+      "id": "gsm8k/train/4588",
+      "index": 4588,
+      "question": "A business executive is going on a four day vacation where he will be unable to answer emails.  The first day he is gone, he receives 16 new emails.  On each of the following days, he receives half as many new emails as he received on the prior day.  At the end of his four day vacation, how many new emails will he have received in total?",
+      "question_sha256": "e4025ce3c5c0e4c3c37c190a2ad9cf188c92eb8b41f667495bfa8ca0cf605028"
+    },
+    {
+      "id": "gsm8k/train/6487",
+      "index": 6487,
+      "question": "Zack's number of marbles can be divided equally among three people, leaving Zack with 5. If Zack decided to give his three friends 20 marbles each and kept five, how many marbles did he initially have?",
+      "question_sha256": "671470a1f1a4e5006e7c79996b68c7c6cec7b7bbfbadaa44ffff08b20b39a29d"
+    },
+    {
+      "id": "gsm8k/train/2497",
+      "index": 2497,
+      "question": "Tim won a $100 raffle.  He gave away 20% to his friend.  How much did he keep?",
+      "question_sha256": "79b98f2408c338283092e32fe6e3bb755ba9d8e15cf53a620c2d368f92766767"
+    },
+    {
+      "id": "gsm8k/train/6882",
+      "index": 6882,
+      "question": "Brendan works online and is paid every week. Once he gets the money, he recharges his debit card with half of his pay. In June, he earned $5000 and bought himself a used car worth $1500. What is his total amount of remaining money at the end of the month?",
+      "question_sha256": "84ecba1bd514b786d99b48099d8ce8fcf1284a89386eef3fd90d43f9e2573cf7"
+    },
+    {
+      "id": "gsm8k/train/2522",
+      "index": 2522,
+      "question": "A large puzzle costs $15. A small puzzle and a large puzzle together cost $23. How much would you pay for 1 large and 3 small puzzles?",
+      "question_sha256": "8beb578650d05ba1ab2497483cba9c880751a0ea94d20322b7ddddf9483ff396"
+    },
+    {
+      "id": "gsm8k/train/6944",
+      "index": 6944,
+      "question": "A local business was selling 25 raffle tickets to raise money for charity.  Each ticket cost $2.00 apiece.  They sold all the tickets and also received 2 $15 donations and a $20 donation.  How much money did they raise?",
+      "question_sha256": "026ba268d95fa6df4ba5fd47af707e72ca24a26cfe476dfc1bcbeab6424e154e"
+    },
+    {
+      "id": "gsm8k/train/1122",
+      "index": 1122,
+      "question": "Tim used to run 3 times a week but decided to add an extra 2 days a week.  She runs 1 hour in the morning and 1 in the evening every day she runs.  How many hours a week does she run now?",
+      "question_sha256": "1b7e886db1bae938b37af6d9d4261349ed92d84598c95b9d983fdc95d3fb53c8"
+    },
+    {
+      "id": "gsm8k/train/6992",
+      "index": 6992,
+      "question": "Tiffany attends the carnival and her mother gives her $3 to play on a ring toss game. For every red bucket she tosses a ring into she gets 2 points. For every green bucket she gets three points. She gets zero points for a miss. Every play costs her $1 and she gets 5 rings per play. She's played two games and already gotten 4 red buckets and 5 green buckets. If she plays until her money runs out, what is the most total points she can get for all three games?",
+      "question_sha256": "4737642a205334c16c628a6d5e1a09fc991dc66b235617f683f44d9a7ff579f1"
+    }
+  ]
+}
