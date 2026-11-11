@@ -9,7 +9,7 @@ Small, direct implementation of the approved plan in `EXPERIMENT_PLAN.md`. No be
 3. `debate/runner.py` gives each agent a private conversation. Round 0 is independent. Revisions append peers' completed previous responses to each private history. Requests for a round are built before generating any revision. The single/three/five-agent trajectories save 1/9/10 responses per question.
 4. `debate/scoring.py` extracts explicit numerical answers as exact fractions and votes by plurality. `debate/analysis.py` alone reads reference labels, scores every selected question, and writes per-round/cumulative costs and uncertainty. It never adds reference answers to prompts.
 
-Only initial responses with matching request fingerprints are reused. There are 16 actual calls per question/repeat with shared initials, versus 20 saved logical responses. Records say where reused responses came from. Numerical accuracy and compliance with the requested final-box format are distinct metrics.
+Shared initial responses use matching request fingerprints. `--continue-from` additionally replays every completed smoke response and revision in its original question/run/method/round/agent slot, after reconstructing and validating its exact history. There are 16 actual calls per new question/repeat with shared initials, versus 20 saved logical responses. Records preserve source hashes and provenance. Numerical accuracy and compliance with the requested final-box format are distinct metrics.
 
 ## Offline validation
 
@@ -68,16 +68,31 @@ Score it separately:
 
 Inspect raw worked explanations, format/validity rates, truncation, memory and `projected_test_3_repeats_gpu_hours`. Review the proposed feasibility criteria in the plan. The projection includes distinct workload costs, including reused initials; it is not a guaranteed wall-clock budget.
 
-After reviewing smoke, run all 30 development questions. Reuse matching completed smoke initial generations, preserving provenance:
+After the completed, parser-v2 smoke review, continue all 30 development questions without regenerating any of the first ten questions' initial answers or revisions. Keep the original `runs/dev-smoke` directory. Use the existing manifest; do not select a new sample. Apply `dev30-continuation-update.zip` in the repository root first (the update contains no smoke directory or model/settings changes). Keep the same Colab GPU/package environment; do not reinstall or upgrade packages during continuation.
+
+First validate and import all 200 saved smoke records into a separate output directory. This preparation command does not import the model loader, load weights, or run inference:
 
 ```python
-!python -m debate.runner --manifest manifests/development.json --limit 30 --repeats 1 --reuse-initial runs/dev-smoke --output runs/dev30
-!python -m debate.analysis --run runs/dev30 --references manifests/development_references.json --output analysis/dev30
+%cd /content/multi-agent-debate
+!python -c "from debate.scoring import PARSER_VERSION; assert PARSER_VERSION == 'explicit-rational-v2'"
+!python -m unittest discover -s tests -p test_continuation.py -v
+!python -m debate.runner --manifest manifests/development.json --limit 30 --repeats 1 --continue-from runs/dev-smoke --output runs/dev30 --prepare-only
 ```
 
-If interrupted, repeat the **same** runner command with `--resume` appended. Existing completed generations are verified and replayed, never overwritten. Reuse inputs must remain available. Changing the manifest, prompt, source code or runtime requires a new run directory. The runner stops on backend exceptions; it does not automatically retry errors. EOS/length/empty completions are final records. Context overflow is saved with an empty response and no model call. A hard process kill may leave `.active`; verify no writer remains and inspect partial files before manually removing that lock. Do not remove generation files to fish for a better answer.
+Expect 30 selected questions, 600 expected response records, 200 imported and 400 missing. The remaining 20 questions normally require 320 new model calls. Next, when ready to run missing inference in Colab, resume the prepared directory:
 
-Analysis is also append-only by directory: use a fresh analysis output name for each partial/final snapshot. The selected-question denominator stays fixed even for a partial run. Per-round/cumulative `model_calls`, tokens and seconds charge only newly generated records in that run; `logical_*` fields include reused response exposure. Global totals sum records once, not round summaries. Runtime projection counts distinct request fingerprints, including externally reused initials at their original measured duration. It excludes model startup and may underestimate long evaluation prompts.
+```python
+!python -m debate.runner --manifest manifests/development.json --limit 30 --repeats 1 --continue-from runs/dev-smoke --output runs/dev30 --resume
+!python -m debate.analysis --run runs/dev30 --references manifests/development_references.json --output analysis/dev30-parser-v2
+```
+
+The runner compares the newly loaded model/runtime identity with the saved source exactly before any inference. The source smoke recorded Tesla T4/FP16, CUDA 12.4, Python 3.13.16, Torch 2.6.0, Transformers 4.51.3, Tokenizers 0.21.1, huggingface-hub 0.30.2 and safetensors 0.5.3. A different GPU, precision, Python/package version, effective generation configuration, model/tokenizer identity, prompt, manifest or seed contract stops continuation rather than regenerating old work. Preparation validates the saved identity and requests; actual runtime compatibility is checked when the model is loaded for the missing work.
+
+If interrupted, repeat the **same** resume command. Existing completed generations are verified and replayed, never overwritten. Repeating preparation also requires `--resume`. Keep the source directory available and unchanged. The recorded source snapshot is audit evidence; parser/analysis-only edits do not invalidate inference compatibility. Explicit prompt/model/settings/runtime contracts and per-record requests still must match. Old smoke metadata with the previous combined source hash can also resume after a parser-only change. The runner stops on backend exceptions without automatic retry. EOS/length/empty completions and saved overflow failures are retained regardless of parsing or correctness. A hard process kill may leave `.active`; verify no writer remains and inspect partial files before manually removing that lock. Do not remove generation files to fish for a better answer.
+
+Analysis is also append-only by directory: use a fresh analysis output name for each partial/final snapshot. Run the analysis command after generation completes; check `complete=true`, 30 completed questions per method/round and parser `explicit-rational-v2` before interpreting scores. All 30 questions, including the inherited ten, are freshly scored under v2; old smoke scores are not merged into v2 scores. Partial analysis keeps the denominator at 30 and marks incompleteness.
+
+Per-round/cumulative `model_calls`, tokens and seconds charge only newly generated records in that continuation; `logical_*` fields include reused response exposure. `carried_forward_cost` counts the inherited smoke workload once per distinct request. `distinct_workload_cost_including_reused` counts the full workload once; a complete 30-question continuation normally has 320 new calls plus 160 inherited calls, 480 overall, with 600 logical response records. Global totals sum records once, not round summaries. The runtime projection uses distinct requests at their original measured durations, including inherited revisions. It excludes model startup and may underestimate long evaluation prompts.
 
 Colab `/content` is temporary. Download run directories and analysis before the session is discarded, and restore them before resuming. Preserve source snapshots, manifests and references alongside them. No main evaluation is launched by these commands.
 

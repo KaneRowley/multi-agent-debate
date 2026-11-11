@@ -1,0 +1,42 @@
+{
+  "status": "prepared_only_no_new_inference",
+  "parser": "explicit-rational-v2",
+  "source_run_sha256": "ca47b31c2cdad1a55e78965238cc4a59820946b57113803b938a6597e98c50f9",
+  "source_record_hashes_sha256": "82c9ad96d55092c49482f04303b64ac3e09ae01e6ffbe32f2a6069bad80f8775",
+  "prepared_run_sha256": "80f92b61c1298d7a90b0574521225eedf8f2634b792c9bab7c232d5e9b88b9d4",
+  "fixed_manifest_sha256": "d266c2fd6eb29b5d023445b719c8880b2d50178de3cd96f3915c0c570dc66424",
+  "selected_questions": 30,
+  "inherited_questions": 10,
+  "untouched_remaining_questions": 20,
+  "expected_response_records": 600,
+  "imported_response_records": 200,
+  "missing_response_records": 400,
+  "new_model_calls_so_far": 0,
+  "expected_remaining_distinct_calls": 320,
+  "source_original_cost": {
+    "logical_responses": 200,
+    "reused_responses": 40,
+    "model_calls": 160,
+    "input_tokens": 219146,
+    "output_tokens": 56684,
+    "generation_seconds": 2762.7751367439987,
+    "logical_input_tokens": 224898,
+    "logical_output_tokens": 69467
+  },
+  "carried_forward_distinct_cost": {
+    "logical_responses": 160,
+    "reused_responses": 0,
+    "model_calls": 160,
+    "input_tokens": 219146,
+    "output_tokens": 56684,
+    "generation_seconds": 2762.7751367439987,
+    "logical_input_tokens": 219146,
+    "logical_output_tokens": 56684
+  },
+  "source_record_bytes_unchanged": true,
+  "all_imported_requests_and_results_match": true,
+  "generation_implementation_matches_smoke": true,
+  "prompt_file_bytes_unchanged": true,
+  "runtime_compatibility": "Saved identities match. Actual Colab runtime is checked before missing inference.",
+  "validation": "22 offline tests passed; 5 focused continuation tests, including 10-to-30 mocked execution."
+}

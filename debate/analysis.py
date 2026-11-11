@@ -76,6 +76,11 @@ def analyze(directory, references):
     all_complete = all(s["completed_questions"] == len(selected) for s in summaries)
     total_cost = costs(rows)
     unique_workload = list({r["request_key"]: r for r in rows}.values())
+    carried = list({r["request_key"]: r for r in rows if r.get("reuse_kind") == "continuation"}.values())
+    # Historical workload includes original measured costs once per request;
+    # these are separate from newly charged compute in this continuation.
+    workload_cost = costs([dict(r, reused_from=None) for r in unique_workload])
+    carried_cost = costs([dict(r, reused_from=None) for r in carried])
     workload_seconds = sum(r["seconds"] for r in unique_workload)
     projected = None
     if metadata["manifest"]["split"] == "train" and all_complete:
@@ -93,6 +98,8 @@ def analyze(directory, references):
                        caveat="Question sampling uncertainty; repeats are retained within each question.")
     return dict(parser_version=PARSER_VERSION, run_sha256=digest(metadata), complete=all_complete,
                 per_round=summaries, across_runs=aggregate, actual_total_cost=total_cost,
+                carried_forward_cost=carried_cost,
+                distinct_workload_cost_including_reused=workload_cost,
                 distinct_workload_seconds_including_reused=workload_seconds,
                 projected_test_3_repeats_gpu_hours=projected,
                 runtime_estimate_caveat="Generation only; longer test prompts, startup and I/O may add cost.",
