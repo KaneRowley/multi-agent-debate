@@ -1,48 +1,82 @@
-# GSM8K debate experiment
+# Multi-agent debate on GSM8K
 
-Small, direct implementation of the approved plan in `EXPERIMENT_PLAN.md`. No benchmark results are included or claimed. The old `lllm-multiagent-debate-benchmark` repository is read-only source material for the exposure audit; this repository does not modify it.
+Does sharing worked solutions improve a language model's mathematical accuracy? This project compares a single agent, independent plurality voting, and multi-agent debate using **Qwen2.5-3B-Instruct** on **100 fixed GSM8K test questions**, with **three generation-seed repeats**.
 
-## Components and flow
+The evaluation is complete. Initial voting improves on the single-agent baseline; debate adds a smaller average gain. The primary debate comparison remains uncertain on this sample.
 
-1. `debate/dataset.py` pins GSM8K, excludes known exposed test IDs, and writes ordered question manifests plus separate evaluator references. Saved manifests are already included: 30 development questions and 100 evaluation questions, disjoint from 106 documented test exclusions.
-2. `debate/prompts.py` builds the exact worked-solution prompts. `debate/generation.py` checks one CUDA GPU and FP16, loads pinned Qwen/tokenizer, and logs effective decoding and hardware settings.
-3. `debate/runner.py` gives each agent a private conversation. Round 0 is independent. Revisions append peers' completed previous responses to each private history. Requests for a round are built before generating any revision. The single/three/five-agent trajectories save 1/9/10 responses per question.
-4. `debate/scoring.py` extracts explicit numerical answers as exact fractions and votes by plurality. `debate/analysis.py` alone reads reference labels, scores every selected question, and writes per-round/cumulative costs and uncertainty. It never adds reference answers to prompts.
+## Results
 
-Shared initial responses use matching request fingerprints. `--continue-from` additionally replays every completed smoke response and revision in its original question/run/method/round/agent slot, after reconstructing and validating its exact history. There are 16 actual calls per new question/repeat with shared initials, versus 20 saved logical responses. Records preserve source hashes and provenance. Numerical accuracy and compliance with the requested final-box format are distinct metrics.
+Mean accuracy across three repeats, using parser `explicit-rational-v3`:
 
-## Offline validation
+| Configuration | Initial voting | One revision | Two revisions |
+|---|---:|---:|---:|
+| Single agent | 87.00% | — | — |
+| Three agents | 89.67% | 91.33% | 91.67% |
+| Five agents | 92.67% | 93.67% | — |
 
-Python 3.11 or 3.12; no third-party packages or model downloads required:
+**Round 0 is independent generation.** A revision lets each agent review the other agents' previous worked solutions while retaining its own conversation. The table reports every evaluated configuration; a dash means that configuration was not run.
+
+The primary comparison, three agents after two revisions versus their initial vote, improves by **2.00 percentage points**. Its paired question-bootstrap 95% interval is approximately **−0.33 to +4.67 points**, so the additional benefit of debate is not established conclusively. The three repeats use the same 100 questions, not 300 independent questions.
+
+The workload contains 6,000 saved response records: 4,800 actual model calls and 1,200 exact-request reuses. Recorded generation time totals about 19.53 T4 GPU-hours, excluding startup, file I/O and interruptions. This is the combined experiment cost, not the standalone cost of any one configuration.
+
+See the [final experiment record](docs/FINAL_EXPERIMENT.md) for model pins, archive checksums and validation. Raw generations and analyses are preserved in the separate `eval100-v3-review.zip` backup; that archive is not committed to this repository. The report and figures are still being prepared.
+
+## Method
+
+- **Model:** `Qwen/Qwen2.5-3B-Instruct`, pinned model/tokenizer revision; Transformers/PyTorch, FP16 on a Tesla T4.
+- **Generation:** temperature 0.7, top-p 0.9, top-k 0, at most 1,024 new tokens.
+- **Development:** 30 fixed GSM8K training questions. Evaluation uses 100 fixed test questions and seed roots 101, 202 and 303.
+- **Debate:** independent initial answers, then synchronous previous-round peer sharing. No judge, calculator, role specialization or agreement-based early stopping.
+- **Scoring:** explicit numerical extraction, exact rational equivalence, and plurality voting. Invalid answers do not vote; tied votes abstain and score incorrect. Format compliance is measured separately.
+- **Selection:** evaluation IDs exclude 106 documented prior-exposure IDs. Additional download-only exposure and model pretraining contamination remain limitations; the sample is not claimed to be entirely untouched.
+
+This adapts [Du et al., Improving Factuality and Reasoning in Language Models through Multiagent Debate](https://arxiv.org/abs/2305.14325). Model, prompts, selection, scale and scoring differ from the published experiment. The [original design plan](docs/EXPERIMENT_PLAN.md) and [documentation index](docs/README.md) record these choices and the development history.
+
+## Repository layout
+
+| Location | Purpose |
+|---|---|
+| `debate/` | Dataset selection, prompts, generation, runner, scoring and analysis |
+| `manifests/` | Fixed questions and separate evaluator references |
+| `tests/` | Offline software tests and response fixtures |
+| `docs/` | Design plan and final experiment record |
+| `docs/archive/` | Historical development instructions and audits |
+| `prior_test_exposure.json` | Exposure inventory used by dataset selection |
+| `requirements-colab.txt` | Pinned GPU runtime dependencies |
+
+## Offline checks
+
+From the repository root, using Python 3.11 or later:
 
 ```bash
 python -m unittest discover -s tests -v
 ```
 
-Tests use a mocked generator and temporary directories. They check histories, synchronous snapshots, question/agent association, absence of labels in prompts, parsing/equivalence/conflicts/ties, revisions, repeated seeds, resume, initial reuse, incremental durability, fixed denominators and compute accounting. They are not inference results.
+These standard-library tests do not download a model or run inference. The preserved implementation passed 28 offline tests, and an offline replay reproduced all 1,800 saved v3 question/round outcomes.
 
-## Exact Colab setup
+## Score saved responses without a GPU
 
-The working implementation is not automatically committed or pushed. Use the delivered `multi-agent-debate-colab.zip` snapshot. In a new Colab notebook select **Runtime → Change runtime type → T4 GPU**. Upload and unpack in a Python cell:
+Restore `eval100/` from the results backup into `runs/eval100/`, then run from the repository root:
 
-```python
-from google.colab import files
-import zipfile
-uploaded = files.upload()  # choose multi-agent-debate-colab.zip
-assert "multi-agent-debate-colab.zip" in uploaded
-with zipfile.ZipFile("multi-agent-debate-colab.zip") as archive:
-    archive.extractall("/content")
+```bash
+python -m debate.analysis --run runs/eval100 --references manifests/evaluation_references.json --output analysis/eval100-v3
 ```
 
-In subsequent cells:
+Use a new analysis output directory if that destination exists. Check that the resulting `summary.json` reports `parser_version: explicit-rational-v3` and `complete: true`. Scoring reads saved responses and does not run the model.
+
+## Run generation in Colab
+
+Select a **T4 GPU**. In notebook cells:
 
 ```python
+!git clone https://github.com/KaneRowley/multi-agent-debate.git /content/multi-agent-debate
 %cd /content/multi-agent-debate
 %pip uninstall -y torchvision torchaudio
 %pip install -r requirements-colab.txt
 ```
 
-The unused vision/audio packages are removed to avoid conflicts with Colab's preinstalled Torch stack. Restart the Colab session after installation (**Runtime → Restart session**), then run:
+Restart the Colab session after installation, then check the environment:
 
 ```python
 %cd /content/multi-agent-debate
@@ -50,71 +84,26 @@ The unused vision/audio packages are removed to avoid conflicts with Colab's pre
 !nvidia-smi
 ```
 
-The first real run below will download the pinned model/tokenizer. Nothing in the offline tests does that. Hardware is checked before loading: one visible CUDA GPU, compute capability at least 7.0, and a finite FP16 matrix operation. Model weights are FP16 on T4; BF16 is never assumed. Pins in `requirements-colab.txt` are the intended Colab environment, not a claim that this environment has been GPU-tested. Resolve installation incompatibilities before inference and record any package changes.
-
-## Development commands
-
-Use the included manifests without regenerating them. The first **10-question smoke check**, all approved configurations, one development repeat:
+A small development run, using the first ten questions and all configurations:
 
 ```python
-!python -m debate.runner --manifest manifests/development.json --limit 10 --repeats 1 --output runs/dev-smoke
+!python -u -m debate.runner --manifest manifests/development.json --limit 10 --repeats 1 --output runs/dev-smoke
+!python -m debate.analysis --run runs/dev-smoke --references manifests/development_references.json --output analysis/dev-smoke-v3
 ```
 
-Score it separately:
+For a reproduction of the frozen evaluation, mount Drive so completed records survive runtime deletion:
 
 ```python
-!python -m debate.analysis --run runs/dev-smoke --references manifests/development_references.json --output analysis/dev-smoke
+from google.colab import drive
+drive.mount("/content/drive")
 ```
-
-Inspect raw worked explanations, format/validity rates, truncation, memory and `projected_test_3_repeats_gpu_hours`. Review the proposed feasibility criteria in the plan. The projection includes distinct workload costs, including reused initials; it is not a guaranteed wall-clock budget.
-
-After the completed, parser-v2 smoke review, continue all 30 development questions without regenerating any of the first ten questions' initial answers or revisions. Keep the original `runs/dev-smoke` directory. Use the existing manifest; do not select a new sample. Apply `dev30-continuation-update.zip` in the repository root first (the update contains no smoke directory or model/settings changes). Keep the same Colab GPU/package environment; do not reinstall or upgrade packages during continuation.
-
-First validate and import all 200 saved smoke records into a separate output directory. This preparation command does not import the model loader, load weights, or run inference:
 
 ```python
-%cd /content/multi-agent-debate
-!python -c "from debate.scoring import PARSER_VERSION; assert PARSER_VERSION == 'explicit-rational-v2'"
-!python -m unittest discover -s tests -p test_continuation.py -v
-!python -m debate.runner --manifest manifests/development.json --limit 30 --repeats 1 --continue-from runs/dev-smoke --output runs/dev30 --prepare-only
+!python -u -m debate.runner --manifest manifests/evaluation.json --repeats 3 --output /content/drive/MyDrive/sakana-results/eval100 --evaluation-ready
 ```
 
-Expect 30 selected questions, 600 expected response records, 200 imported and 400 missing. The remaining 20 questions normally require 320 new model calls. Next, when ready to run missing inference in Colab, resume the prepared directory:
+The first generation run downloads model weights. `--evaluation-ready` explicitly acknowledges that the design is frozen; the command above reproduces the existing experiment rather than requesting a new design search.
 
-```python
-!python -m debate.runner --manifest manifests/development.json --limit 30 --repeats 1 --continue-from runs/dev-smoke --output runs/dev30 --resume
-!python -m debate.analysis --run runs/dev30 --references manifests/development_references.json --output analysis/dev30-parser-v2
-```
+To continue a stopped run, repeat its exact command with `--resume` appended. Restore the same code, GPU/runtime settings and Drive mount first. Resume checks compatibility and skips completed records. Run only one writer per output directory. If a hard interruption leaves `.active`, confirm the old process has ended before removing that lock. Never delete completed response files to obtain different answers.
 
-The runner compares the newly loaded model/runtime identity with the saved source exactly before any inference. The source smoke recorded Tesla T4/FP16, CUDA 12.4, Python 3.13.16, Torch 2.6.0, Transformers 4.51.3, Tokenizers 0.21.1, huggingface-hub 0.30.2 and safetensors 0.5.3. A different GPU, precision, Python/package version, effective generation configuration, model/tokenizer identity, prompt, manifest or seed contract stops continuation rather than regenerating old work. Preparation validates the saved identity and requests; actual runtime compatibility is checked when the model is loaded for the missing work.
-
-If interrupted, repeat the **same** resume command. Existing completed generations are verified and replayed, never overwritten. Repeating preparation also requires `--resume`. Keep the source directory available and unchanged. The recorded source snapshot is audit evidence; parser/analysis-only edits do not invalidate inference compatibility. Explicit prompt/model/settings/runtime contracts and per-record requests still must match. Old smoke metadata with the previous combined source hash can also resume after a parser-only change. The runner stops on backend exceptions without automatic retry. EOS/length/empty completions and saved overflow failures are retained regardless of parsing or correctness. A hard process kill may leave `.active`; verify no writer remains and inspect partial files before manually removing that lock. Do not remove generation files to fish for a better answer.
-
-Analysis is also append-only by directory: use a fresh analysis output name for each partial/final snapshot. Run the analysis command after generation completes; check `complete=true`, 30 completed questions per method/round and parser `explicit-rational-v2` before interpreting scores. All 30 questions, including the inherited ten, are freshly scored under v2; old smoke scores are not merged into v2 scores. Partial analysis keeps the denominator at 30 and marks incompleteness.
-
-Per-round/cumulative `model_calls`, tokens and seconds charge only newly generated records in that continuation; `logical_*` fields include reused response exposure. `carried_forward_cost` counts the inherited smoke workload once per distinct request. `distinct_workload_cost_including_reused` counts the full workload once; a complete 30-question continuation normally has 320 new calls plus 160 inherited calls, 480 overall, with 600 logical response records. Global totals sum records once, not round summaries. The runtime projection uses distinct requests at their original measured durations, including inherited revisions. It excludes model startup and may underestimate long evaluation prompts.
-
-Colab `/content` is temporary. Download run directories and analysis before the session is discarded, and restore them before resuming. Preserve source snapshots, manifests and references alongside them. No main evaluation is launched by these commands.
-
-## Selection, audit and evaluation readiness
-
-`prior_test_exposure.json` contains the recovered old 100 IDs, source commits/blob hashes, the row-mapping check and extra paper/audit exclusions. All 1,319 old/new test rows match. The new evaluation IDs exclude the full 106-ID union. Colab/download-only files have not all been checked, so do not describe the sample as untouched. No additional file is needed for the recovered 100; provide any result file with a different test `question_selection` or `question_id` set for a further audit.
-
-Only if a reviewed exclusion inventory changes, create **new** manifests (never overwrite the included fixed selection):
-
-```bash
-python -m debate.dataset --exposure prior_test_exposure.json --output manifests-reviewed
-```
-
-This downloads dataset files only, pins their revision and records file checksums. It does not load models or select on answers. The default included manifest files were created before inference. Generation reads only the label-free manifest; `_references.json` files are evaluator inputs.
-
-Main evaluation is intentionally gated by `--evaluation-ready`. Only after development runtime/explanation review, exposure review, and final design freeze should a future evaluation invocation use `manifests/evaluation.json`, `--repeats 3`, a fresh output directory, and that flag. This README does not launch evaluation or report hypothetical scores.
-
-## Still unverified
-
-- Pinned Colab package installation, actual T4 model loading, FP16 generation stability and peak memory.
-- Runtime/token cost, usable worked explanations, single-agent capability and the three-repeat budget.
-- Debate accuracy, scaling behavior and statistical uncertainty on real outputs.
-- Additional exposure in Colab/download-only result files and pretraining contamination.
-
-The first inference task is the 10-question development smoke command above. No real inference, model downloads, commits, pushes or edits to old report results were performed during implementation.
+Local `/content` storage is temporary. Keep both the final code and results ZIP backups outside it. Historical smoke-to-development continuation instructions are retained under [the archive](docs/archive/README.md); their v2 instructions describe an earlier stage, not the final scoring setup.
