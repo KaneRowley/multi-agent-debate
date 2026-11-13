@@ -1,4 +1,5 @@
-"""Immutable JSON files: publish only complete files, never replace a record."""
+"""Save complete JSON records without replacing existing records."""
+import errno
 import hashlib
 import json
 import os
@@ -7,8 +8,12 @@ from pathlib import Path
 
 
 def digest(value):
-    return hashlib.sha256(json.dumps(value, sort_keys=True, ensure_ascii=False,
-                                     separators=(",", ":")).encode()).hexdigest()
+    return hashlib.sha256(
+        json.dumps(
+            value, sort_keys=True, ensure_ascii=False,
+            separators=(",", ":")
+        ).encode()
+    ).hexdigest()
 
 
 def read(path):
@@ -18,14 +23,34 @@ def read(path):
 def save_new(path, value):
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
-    fd, temporary = tempfile.mkstemp(dir=path.parent, prefix=".pending-")
+    fd, temporary = tempfile.mkstemp(
+        dir=path.parent, prefix=".pending-"
+    )
     try:
         with os.fdopen(fd, "w", encoding="utf-8", newline="\n") as f:
-            json.dump(value, f, indent=2, ensure_ascii=False, allow_nan=False)
+            json.dump(
+                value, f, indent=2,
+                ensure_ascii=False, allow_nan=False
+            )
             f.write("\n")
             f.flush()
             os.fsync(f.fileno())
-        # Hard-link publication is atomic and fails if path already exists.
-        os.link(temporary, path)
+
+        try:
+            os.link(temporary, path)
+        except OSError as exc:
+            on_drive = path.resolve().is_relative_to(
+                Path("/content/drive")
+            )
+            unsupported = exc.errno in (
+                errno.EPERM, errno.EOPNOTSUPP, errno.EXDEV
+            )
+            if not (on_drive and unsupported):
+                raise
+            # The runner holds the exclusive run-directory lock.
+            if path.exists():
+                raise FileExistsError(str(path))
+            os.rename(temporary, path)
     finally:
-        os.unlink(temporary)
+        if os.path.exists(temporary):
+            os.unlink(temporary)

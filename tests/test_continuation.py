@@ -61,7 +61,7 @@ class ContinuationTests(unittest.TestCase):
             refs = {q["id"]: "#### 2" for q in manifest["questions"]}
             summary, _ = analyze(output, refs)
             self.assertTrue(summary["complete"])
-            self.assertEqual(summary["parser_version"], "explicit-rational-v2")
+            self.assertEqual(summary["parser_version"], "explicit-rational-v3")
             self.assertEqual(summary["actual_total_cost"]["logical_responses"], 600)
             self.assertEqual(summary["actual_total_cost"]["model_calls"], 320)
             self.assertEqual(summary["actual_total_cost"]["generation_seconds"], 320)
