@@ -4,7 +4,7 @@ from collections import Counter
 from dataclasses import dataclass
 from fractions import Fraction
 
-PARSER_VERSION = "explicit-rational-v2"
+PARSER_VERSION = "explicit-rational-v3"
 NUMBER = r"[+-]?(?:(?:[0-9]{1,3}(?:,[0-9]{3})+|[0-9]+)(?:\.[0-9]+)?|\.[0-9]+)"
 RATIONAL = rf"{NUMBER}(?:\s*/\s*{NUMBER})?"
 BOX = re.compile(r"\\boxed\{((?:[^{}]|\{[^{}]*\})*)\}")
@@ -71,7 +71,23 @@ def extract(text):
         for start, end in reversed(spans):
             masked = masked[:start] + sentinel + masked[end:]
         for match in MARKER.finditer(masked):
+            # A standalone heading labels the following prose; it is not a
+            # separate nonnumeric claim. Only skip it when a later box exists.
+            line_start = masked.rfind("\n", 0, match.start()) + 1
+            line_end = masked.find("\n", match.start())
+            heading = masked[line_start:line_end] if line_end >= 0 else ""
+            following_line = masked[match.end():].split("\n", 1)[0].strip().strip("*$` ")
+            if (sentinel in following_line and not re.match(RATIONAL, following_line)
+                    and re.fullmatch(
+                    r"[ \t]*(?:\#{1,6}[ \t]+|[0-9]+\.[ \t]+|[-+*][ \t]+)?"
+                    r"(?:\*\*|__|`)?(?:final[ \t]+(?:numerical[ \t]+)?answer|answer)"
+                    r"[ \t]*:(?:\*\*|__|`)?[ \t]*", heading, re.I)):
+                continue
             claim = masked[match.end():].split("\n", 1)[0].strip().strip("*$` ")
+            # A bounded introduction may qualify the immediately following box.
+            # Do not skip arbitrary text or search it for an internal number.
+            if re.search(r"\bis\b", match.group(), re.I):
+                claim = re.sub(r"^indeed[ \t]+(?=" + re.escape(sentinel) + r")", "", claim, flags=re.I)
             if claim.startswith(sentinel):
                 claim = claim[len(sentinel):].strip()
                 if ambiguous_box_suffix(claim):
@@ -79,8 +95,9 @@ def extract(text):
                 continue
             # These describe an answer rather than asserting another value, e.g.
             # "the final answer is accurate:" before a later displayed box.
-            if boxes and re.search(r"\bis\b", match.group(), re.I) and re.match(
-                    r"(?:accurate|consistent|derived)\b", claim, re.I):
+            if boxes and re.search(r"\bis\b", match.group(), re.I) and (re.match(
+                    r"(?:accurate|consistent|derived)\b", claim, re.I)
+                    or re.fullmatch(r"correct[.!:]?", claim, re.I)):
                 continue
             claim = claim.strip("*$` ")
             # Permit prose suffixes/units after a clearly marked numeric answer.
