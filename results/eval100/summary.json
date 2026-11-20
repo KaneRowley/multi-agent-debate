@@ -1,0 +1,682 @@
+{
+  "parser_version": "explicit-rational-v3",
+  "run_sha256": "90ff837ae0111e05d1dedcaf7ee1e11098553b80cfbbfabeefc4c2b4e431e913",
+  "complete": true,
+  "per_round": [
+    {
+      "run": 0,
+      "method": "single",
+      "round": 0,
+      "questions": 100,
+      "completed_questions": 100,
+      "accuracy": 0.91,
+      "agent_accuracy": 0.91,
+      "format_compliance": 0.76,
+      "invalid_rate": 0.0,
+      "tie_rate": 0.0,
+      "truncated_responses": 0,
+      "round_cost": {
+        "logical_responses": 100,
+        "reused_responses": 0,
+        "model_calls": 100,
+        "input_tokens": 13490,
+        "output_tokens": 29239,
+        "generation_seconds": 1145.221662934,
+        "logical_input_tokens": 13490,
+        "logical_output_tokens": 29239
+      },
+      "cumulative_cost": {
+        "logical_responses": 100,
+        "reused_responses": 0,
+        "model_calls": 100,
+        "input_tokens": 13490,
+        "output_tokens": 29239,
+        "generation_seconds": 1145.221662934,
+        "logical_input_tokens": 13490,
+        "logical_output_tokens": 29239
+      }
+    },
+    {
+      "run": 0,
+      "method": "debate3",
+      "round": 0,
+      "questions": 100,
+      "completed_questions": 100,
+      "accuracy": 0.91,
+      "agent_accuracy": 0.89,
+      "format_compliance": 0.7166666666666667,
+      "invalid_rate": 0.0,
+      "tie_rate": 0.02,
+      "truncated_responses": 0,
+      "round_cost": {
+        "logical_responses": 300,
+        "reused_responses": 100,
+        "model_calls": 200,
+        "input_tokens": 26980,
+        "output_tokens": 61370,
+        "generation_seconds": 2403.3048639670005,
+        "logical_input_tokens": 40470,
+        "logical_output_tokens": 90609
+      },
+      "cumulative_cost": {
+        "logical_responses": 300,
+        "reused_responses": 100,
+        "model_calls": 200,
+        "input_tokens": 26980,
+        "output_tokens": 61370,
+        "generation_seconds": 2403.3048639670005,
+        "logical_input_tokens": 40470,
+        "logical_output_tokens": 90609
+      }
+    },
+    {
+      "run": 0,
+      "method": "debate3",
+      "round": 1,
+      "questions": 100,
+      "completed_questions": 100,
+      "accuracy": 0.93,
+      "agent_accuracy": 0.92,
+      "format_compliance": 0.7466666666666667,
+      "invalid_rate": 0.01666666666666672,
+      "tie_rate": 0.01,
+      "truncated_responses": 0,
+      "round_cost": {
+        "logical_responses": 300,
+        "reused_responses": 0,
+        "model_calls": 300,
+        "input_tokens": 370764,
+        "output_tokens": 90817,
+        "generation_seconds": 3805.5782034289878,
+        "logical_input_tokens": 370764,
+        "logical_output_tokens": 90817
+      },
+      "cumulative_cost": {
+        "logical_responses": 600,
+        "reused_responses": 100,
+        "model_calls": 500,
+        "input_tokens": 397744,
+        "output_tokens": 152187,
+        "generation_seconds": 6208.883067395989,
+        "logical_input_tokens": 411234,
+        "logical_output_tokens": 181426
+      }
+    },
+    {
+      "run": 0,
+      "method": "debate3",
+      "round": 2,
+      "questions": 100,
+      "completed_questions": 100,
+      "accuracy": 0.92,
+      "agent_accuracy": 0.9233333333333333,
+      "format_compliance": 0.7566666666666667,
+      "invalid_rate": 0.020000000000000018,
+      "tie_rate": 0.01,
+      "truncated_responses": 0,
+      "round_cost": {
+        "logical_responses": 300,
+        "reused_responses": 0,
+        "model_calls": 300,
+        "input_tokens": 701688,
+        "output_tokens": 89121,
+        "generation_seconds": 4350.018501303007,
+        "logical_input_tokens": 701688,
+        "logical_output_tokens": 89121
+      },
+      "cumulative_cost": {
+        "logical_responses": 900,
+        "reused_responses": 100,
+        "model_calls": 800,
+        "input_tokens": 1099432,
+        "output_tokens": 241308,
+        "generation_seconds": 10558.901568698995,
+        "logical_input_tokens": 1112922,
+        "logical_output_tokens": 270547
+      }
+    },
+    {
+      "run": 0,
+      "method": "debate5",
+      "round": 0,
+      "questions": 100,
+      "completed_questions": 100,
+      "accuracy": 0.94,
+      "agent_accuracy": 0.89,
+      "format_compliance": 0.73,
+      "invalid_rate": 0.0020000000000000018,
+      "tie_rate": 0.01,
+      "truncated_responses": 0,
+      "round_cost": {
+        "logical_responses": 500,
+        "reused_responses": 300,
+        "model_calls": 200,
+        "input_tokens": 26980,
+        "output_tokens": 60278,
+        "generation_seconds": 2364.233842645007,
+        "logical_input_tokens": 67450,
+        "logical_output_tokens": 150887
+      },
+      "cumulative_cost": {
+        "logical_responses": 500,
+        "reused_responses": 300,
+        "model_calls": 200,
+        "input_tokens": 26980,
+        "output_tokens": 60278,
+        "generation_seconds": 2364.233842645007,
+        "logical_input_tokens": 67450,
+        "logical_output_tokens": 150887
+      }
+    },
+    {
+      "run": 0,
+      "method": "debate5",
+      "round": 1,
+      "questions": 100,
+      "completed_questions": 100,
+      "accuracy": 0.95,
+      "agent_accuracy": 0.912,
+      "format_compliance": 0.66,
+      "invalid_rate": 0.03600000000000003,
+      "tie_rate": 0.0,
+      "truncated_responses": 1,
+      "round_cost": {
+        "logical_responses": 500,
+        "reused_responses": 0,
+        "model_calls": 500,
+        "input_tokens": 928330,
+        "output_tokens": 195979,
+        "generation_seconds": 8841.15645896504,
+        "logical_input_tokens": 928330,
+        "logical_output_tokens": 195979
+      },
+      "cumulative_cost": {
+        "logical_responses": 1000,
+        "reused_responses": 300,
+        "model_calls": 700,
+        "input_tokens": 955310,
+        "output_tokens": 256257,
+        "generation_seconds": 11205.390301610048,
+        "logical_input_tokens": 995780,
+        "logical_output_tokens": 346866
+      }
+    },
+    {
+      "run": 1,
+      "method": "single",
+      "round": 0,
+      "questions": 100,
+      "completed_questions": 100,
+      "accuracy": 0.87,
+      "agent_accuracy": 0.87,
+      "format_compliance": 0.66,
+      "invalid_rate": 0.010000000000000009,
+      "tie_rate": 0.0,
+      "truncated_responses": 0,
+      "round_cost": {
+        "logical_responses": 100,
+        "reused_responses": 0,
+        "model_calls": 100,
+        "input_tokens": 13490,
+        "output_tokens": 31312,
+        "generation_seconds": 1274.227301586001,
+        "logical_input_tokens": 13490,
+        "logical_output_tokens": 31312
+      },
+      "cumulative_cost": {
+        "logical_responses": 100,
+        "reused_responses": 0,
+        "model_calls": 100,
+        "input_tokens": 13490,
+        "output_tokens": 31312,
+        "generation_seconds": 1274.227301586001,
+        "logical_input_tokens": 13490,
+        "logical_output_tokens": 31312
+      }
+    },
+    {
+      "run": 1,
+      "method": "debate3",
+      "round": 0,
+      "questions": 100,
+      "completed_questions": 100,
+      "accuracy": 0.9,
+      "agent_accuracy": 0.8833333333333333,
+      "format_compliance": 0.7066666666666667,
+      "invalid_rate": 0.00666666666666671,
+      "tie_rate": 0.02,
+      "truncated_responses": 0,
+      "round_cost": {
+        "logical_responses": 300,
+        "reused_responses": 100,
+        "model_calls": 200,
+        "input_tokens": 26980,
+        "output_tokens": 60100,
+        "generation_seconds": 2451.377684825985,
+        "logical_input_tokens": 40470,
+        "logical_output_tokens": 91412
+      },
+      "cumulative_cost": {
+        "logical_responses": 300,
+        "reused_responses": 100,
+        "model_calls": 200,
+        "input_tokens": 26980,
+        "output_tokens": 60100,
+        "generation_seconds": 2451.377684825985,
+        "logical_input_tokens": 40470,
+        "logical_output_tokens": 91412
+      }
+    },
+    {
+      "run": 1,
+      "method": "debate3",
+      "round": 1,
+      "questions": 100,
+      "completed_questions": 100,
+      "accuracy": 0.91,
+      "agent_accuracy": 0.9233333333333333,
+      "format_compliance": 0.7333333333333333,
+      "invalid_rate": 0.013333333333333308,
+      "tie_rate": 0.02,
+      "truncated_responses": 0,
+      "round_cost": {
+        "logical_responses": 300,
+        "reused_responses": 0,
+        "model_calls": 300,
+        "input_tokens": 373176,
+        "output_tokens": 89549,
+        "generation_seconds": 3894.473284017028,
+        "logical_input_tokens": 373176,
+        "logical_output_tokens": 89549
+      },
+      "cumulative_cost": {
+        "logical_responses": 600,
+        "reused_responses": 100,
+        "model_calls": 500,
+        "input_tokens": 400156,
+        "output_tokens": 149649,
+        "generation_seconds": 6345.850968843013,
+        "logical_input_tokens": 413646,
+        "logical_output_tokens": 180961
+      }
+    },
+    {
+      "run": 1,
+      "method": "debate3",
+      "round": 2,
+      "questions": 100,
+      "completed_questions": 100,
+      "accuracy": 0.92,
+      "agent_accuracy": 0.9133333333333333,
+      "format_compliance": 0.7533333333333333,
+      "invalid_rate": 0.020000000000000018,
+      "tie_rate": 0.0,
+      "truncated_responses": 0,
+      "round_cost": {
+        "logical_responses": 300,
+        "reused_responses": 0,
+        "model_calls": 300,
+        "input_tokens": 700293,
+        "output_tokens": 85817,
+        "generation_seconds": 4285.093677721968,
+        "logical_input_tokens": 700293,
+        "logical_output_tokens": 85817
+      },
+      "cumulative_cost": {
+        "logical_responses": 900,
+        "reused_responses": 100,
+        "model_calls": 800,
+        "input_tokens": 1100449,
+        "output_tokens": 235466,
+        "generation_seconds": 10630.94464656498,
+        "logical_input_tokens": 1113939,
+        "logical_output_tokens": 266778
+      }
+    },
+    {
+      "run": 1,
+      "method": "debate5",
+      "round": 0,
+      "questions": 100,
+      "completed_questions": 100,
+      "accuracy": 0.9,
+      "agent_accuracy": 0.878,
+      "format_compliance": 0.72,
+      "invalid_rate": 0.008000000000000007,
+      "tie_rate": 0.03,
+      "truncated_responses": 0,
+      "round_cost": {
+        "logical_responses": 500,
+        "reused_responses": 300,
+        "model_calls": 200,
+        "input_tokens": 26980,
+        "output_tokens": 61640,
+        "generation_seconds": 2518.886588976988,
+        "logical_input_tokens": 67450,
+        "logical_output_tokens": 153052
+      },
+      "cumulative_cost": {
+        "logical_responses": 500,
+        "reused_responses": 300,
+        "model_calls": 200,
+        "input_tokens": 26980,
+        "output_tokens": 61640,
+        "generation_seconds": 2518.886588976988,
+        "logical_input_tokens": 67450,
+        "logical_output_tokens": 153052
+      }
+    },
+    {
+      "run": 1,
+      "method": "debate5",
+      "round": 1,
+      "questions": 100,
+      "completed_questions": 100,
+      "accuracy": 0.92,
+      "agent_accuracy": 0.906,
+      "format_compliance": 0.672,
+      "invalid_rate": 0.020000000000000018,
+      "tie_rate": 0.01,
+      "truncated_responses": 2,
+      "round_cost": {
+        "logical_responses": 500,
+        "reused_responses": 0,
+        "model_calls": 500,
+        "input_tokens": 939150,
+        "output_tokens": 188786,
+        "generation_seconds": 8783.212424796002,
+        "logical_input_tokens": 939150,
+        "logical_output_tokens": 188786
+      },
+      "cumulative_cost": {
+        "logical_responses": 1000,
+        "reused_responses": 300,
+        "model_calls": 700,
+        "input_tokens": 966130,
+        "output_tokens": 250426,
+        "generation_seconds": 11302.09901377299,
+        "logical_input_tokens": 1006600,
+        "logical_output_tokens": 341838
+      }
+    },
+    {
+      "run": 2,
+      "method": "single",
+      "round": 0,
+      "questions": 100,
+      "completed_questions": 100,
+      "accuracy": 0.83,
+      "agent_accuracy": 0.83,
+      "format_compliance": 0.77,
+      "invalid_rate": 0.020000000000000018,
+      "tie_rate": 0.0,
+      "truncated_responses": 0,
+      "round_cost": {
+        "logical_responses": 100,
+        "reused_responses": 0,
+        "model_calls": 100,
+        "input_tokens": 13490,
+        "output_tokens": 29328,
+        "generation_seconds": 1225.1128148840041,
+        "logical_input_tokens": 13490,
+        "logical_output_tokens": 29328
+      },
+      "cumulative_cost": {
+        "logical_responses": 100,
+        "reused_responses": 0,
+        "model_calls": 100,
+        "input_tokens": 13490,
+        "output_tokens": 29328,
+        "generation_seconds": 1225.1128148840041,
+        "logical_input_tokens": 13490,
+        "logical_output_tokens": 29328
+      }
+    },
+    {
+      "run": 2,
+      "method": "debate3",
+      "round": 0,
+      "questions": 100,
+      "completed_questions": 100,
+      "accuracy": 0.88,
+      "agent_accuracy": 0.8566666666666667,
+      "format_compliance": 0.7466666666666667,
+      "invalid_rate": 0.010000000000000009,
+      "tie_rate": 0.08,
+      "truncated_responses": 0,
+      "round_cost": {
+        "logical_responses": 300,
+        "reused_responses": 100,
+        "model_calls": 200,
+        "input_tokens": 26980,
+        "output_tokens": 61277,
+        "generation_seconds": 2559.5591865719916,
+        "logical_input_tokens": 40470,
+        "logical_output_tokens": 90605
+      },
+      "cumulative_cost": {
+        "logical_responses": 300,
+        "reused_responses": 100,
+        "model_calls": 200,
+        "input_tokens": 26980,
+        "output_tokens": 61277,
+        "generation_seconds": 2559.5591865719916,
+        "logical_input_tokens": 40470,
+        "logical_output_tokens": 90605
+      }
+    },
+    {
+      "run": 2,
+      "method": "debate3",
+      "round": 1,
+      "questions": 100,
+      "completed_questions": 100,
+      "accuracy": 0.9,
+      "agent_accuracy": 0.88,
+      "format_compliance": 0.7166666666666667,
+      "invalid_rate": 0.023333333333333317,
+      "tie_rate": 0.02,
+      "truncated_responses": 0,
+      "round_cost": {
+        "logical_responses": 300,
+        "reused_responses": 0,
+        "model_calls": 300,
+        "input_tokens": 370755,
+        "output_tokens": 91208,
+        "generation_seconds": 4029.1365451519923,
+        "logical_input_tokens": 370755,
+        "logical_output_tokens": 91208
+      },
+      "cumulative_cost": {
+        "logical_responses": 600,
+        "reused_responses": 100,
+        "model_calls": 500,
+        "input_tokens": 397735,
+        "output_tokens": 152485,
+        "generation_seconds": 6588.695731723983,
+        "logical_input_tokens": 411225,
+        "logical_output_tokens": 181813
+      }
+    },
+    {
+      "run": 2,
+      "method": "debate3",
+      "round": 2,
+      "questions": 100,
+      "completed_questions": 100,
+      "accuracy": 0.91,
+      "agent_accuracy": 0.89,
+      "format_compliance": 0.72,
+      "invalid_rate": 0.013333333333333308,
+      "tie_rate": 0.0,
+      "truncated_responses": 1,
+      "round_cost": {
+        "logical_responses": 300,
+        "reused_responses": 0,
+        "model_calls": 300,
+        "input_tokens": 702849,
+        "output_tokens": 91931,
+        "generation_seconds": 4674.238373603995,
+        "logical_input_tokens": 702849,
+        "logical_output_tokens": 91931
+      },
+      "cumulative_cost": {
+        "logical_responses": 900,
+        "reused_responses": 100,
+        "model_calls": 800,
+        "input_tokens": 1100584,
+        "output_tokens": 244416,
+        "generation_seconds": 11262.934105327979,
+        "logical_input_tokens": 1114074,
+        "logical_output_tokens": 273744
+      }
+    },
+    {
+      "run": 2,
+      "method": "debate5",
+      "round": 0,
+      "questions": 100,
+      "completed_questions": 100,
+      "accuracy": 0.94,
+      "agent_accuracy": 0.872,
+      "format_compliance": 0.742,
+      "invalid_rate": 0.006000000000000005,
+      "tie_rate": 0.02,
+      "truncated_responses": 0,
+      "round_cost": {
+        "logical_responses": 500,
+        "reused_responses": 300,
+        "model_calls": 200,
+        "input_tokens": 26980,
+        "output_tokens": 60318,
+        "generation_seconds": 2525.7800373329887,
+        "logical_input_tokens": 67450,
+        "logical_output_tokens": 150923
+      },
+      "cumulative_cost": {
+        "logical_responses": 500,
+        "reused_responses": 300,
+        "model_calls": 200,
+        "input_tokens": 26980,
+        "output_tokens": 60318,
+        "generation_seconds": 2525.7800373329887,
+        "logical_input_tokens": 67450,
+        "logical_output_tokens": 150923
+      }
+    },
+    {
+      "run": 2,
+      "method": "debate5",
+      "round": 1,
+      "questions": 100,
+      "completed_questions": 100,
+      "accuracy": 0.94,
+      "agent_accuracy": 0.894,
+      "format_compliance": 0.688,
+      "invalid_rate": 0.040000000000000036,
+      "tie_rate": 0.01,
+      "truncated_responses": 4,
+      "round_cost": {
+        "logical_responses": 500,
+        "reused_responses": 0,
+        "model_calls": 500,
+        "input_tokens": 928520,
+        "output_tokens": 194543,
+        "generation_seconds": 9193.949654041995,
+        "logical_input_tokens": 928520,
+        "logical_output_tokens": 194543
+      },
+      "cumulative_cost": {
+        "logical_responses": 1000,
+        "reused_responses": 300,
+        "model_calls": 700,
+        "input_tokens": 955500,
+        "output_tokens": 254861,
+        "generation_seconds": 11719.729691374985,
+        "logical_input_tokens": 995970,
+        "logical_output_tokens": 345466
+      }
+    }
+  ],
+  "across_runs": [
+    {
+      "method": "single",
+      "round": 0,
+      "mean_accuracy": 0.87,
+      "sd_accuracy": 0.040000000000000036
+    },
+    {
+      "method": "debate3",
+      "round": 0,
+      "mean_accuracy": 0.8966666666666667,
+      "sd_accuracy": 0.01527525231651948
+    },
+    {
+      "method": "debate3",
+      "round": 1,
+      "mean_accuracy": 0.9133333333333333,
+      "sd_accuracy": 0.01527525231651948
+    },
+    {
+      "method": "debate3",
+      "round": 2,
+      "mean_accuracy": 0.9166666666666667,
+      "sd_accuracy": 0.005773502691896263
+    },
+    {
+      "method": "debate5",
+      "round": 0,
+      "mean_accuracy": 0.9266666666666666,
+      "sd_accuracy": 0.023094010767584987
+    },
+    {
+      "method": "debate5",
+      "round": 1,
+      "mean_accuracy": 0.9366666666666666,
+      "sd_accuracy": 0.01527525231651942
+    }
+  ],
+  "actual_total_cost": {
+    "logical_responses": 6000,
+    "reused_responses": 1200,
+    "model_calls": 4800,
+    "input_tokens": 6217875,
+    "output_tokens": 1572613,
+    "generation_seconds": 70324.56110675399,
+    "logical_input_tokens": 6379755,
+    "logical_output_tokens": 1935118
+  },
+  "carried_forward_cost": {
+    "logical_responses": 0,
+    "reused_responses": 0,
+    "model_calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "generation_seconds": 0,
+    "logical_input_tokens": 0,
+    "logical_output_tokens": 0
+  },
+  "distinct_workload_cost_including_reused": {
+    "logical_responses": 4800,
+    "reused_responses": 0,
+    "model_calls": 4800,
+    "input_tokens": 6217875,
+    "output_tokens": 1572613,
+    "generation_seconds": 70324.56110675399,
+    "logical_input_tokens": 6217875,
+    "logical_output_tokens": 1572613
+  },
+  "distinct_workload_seconds_including_reused": 70324.56110675399,
+  "projected_test_3_repeats_gpu_hours": null,
+  "runtime_estimate_caveat": "Generation only; longer test prompts, startup and I/O may add cost.",
+  "primary_comparison": {
+    "comparison": "debate3 r2 minus r0",
+    "difference": 0.02,
+    "question_bootstrap_95": [
+      -0.003333333333333333,
+      0.04666666666666666
+    ],
+    "seed": 909,
+    "caveat": "Question sampling uncertainty; repeats are retained within each question."
+  }
+}
