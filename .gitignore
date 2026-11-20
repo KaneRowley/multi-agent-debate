@@ -3,3 +3,11 @@ __pycache__/
 .venv/
 runs/
 analysis/
+generations/
+checkpoints/
+run.json
+comparison.json
+.active
+.pending-*
+eval100*-review.zip
+dev30-review.zip

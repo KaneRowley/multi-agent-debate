@@ -107,3 +107,27 @@ The first generation run downloads model weights. `--evaluation-ready` explicitl
 To continue a stopped run, repeat its exact command with `--resume` appended. Restore the same code, GPU/runtime settings and Drive mount first. Resume checks compatibility and skips completed records. Run only one writer per output directory. If a hard interruption leaves `.active`, confirm the old process has ended before removing that lock. Never delete completed response files to obtain different answers.
 
 Local `/content` storage is temporary. Keep both the final code and results ZIP backups outside it. Historical smoke-to-development continuation instructions are retained under [the archive](docs/archive/README.md); their v2 instructions describe an earlier stage, not the final scoring setup.
+
+## Peer summarisation follow-up in Colab
+
+Use the T4 setup above and mount Drive. Set `baseline` to the Drive folder containing the saved `dev30/` and `eval100/` run directories, each with `run.json` and `generations/`. Restore `runs/dev30/` from `dev30-review.zip` and `eval100/` from `eval100-v3-review.zip` if needed. Keep these runs in place. The follow-up compares one three-agent revision using summarised peer responses with the saved first revision, scored with `explicit-rational-v3`.
+
+```python
+baseline = "/content/drive/MyDrive/sakana-results"
+followup = "/content/drive/MyDrive/sakana-summarisation-followup"
+```
+
+Run the five-question development pilot first, then the evaluation on the saved 100 questions and all three repeats:
+
+```python
+!python -u -m debate.summarisation_followup --source "{baseline}/dev30" --references manifests/development_references.json --dev-limit 5 --output "{followup}/dev-pilot"
+!python -u -m debate.summarisation_followup --source "{baseline}/eval100" --references manifests/evaluation_references.json --output "{followup}/eval100"
+```
+
+Resume with the same code, runtime, paths and options. For evaluation:
+
+```python
+!python -u -m debate.summarisation_followup --source "{baseline}/eval100" --references manifests/evaluation_references.json --output "{followup}/eval100" --resume
+```
+
+For the pilot, append `--resume` to its command. If a hard stop leaves `.active`, add `--clear-stale-lock` only after confirming the previous process has ended. Use one writer per output directory. Saved summaries and revisions are reused, and `comparison.json` is written after completion. Keep run files and checkpoints on Drive.
