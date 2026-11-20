@@ -44,15 +44,3 @@ class StorageTests(unittest.TestCase):
                     save_new(target, {"answer": 42})
             self.assertEqual(caught.exception.errno, errno.ENOSPC)
             self.assertFalse(target.exists())
-
-
-class FinalParserTests(unittest.TestCase):
-    def test_version_and_bounded_introductions(self):
-        from debate.scoring import PARSER_VERSION, extract
-        self.assertEqual(PARSER_VERSION, "explicit-rational-v3")
-        for text in ["### Final Answer:\nThe result is \\boxed{2400}", "The answer is indeed \\boxed{38}", "The answer is correct.\n\\boxed{38}"]:
-            self.assertIsNotNone(extract(text).value)
-
-    def test_conflicting_boxes_remain_rejected(self):
-        from debate.scoring import extract
-        self.assertIsNone(extract("Peer: \\boxed{1000}\nMy answer: \\boxed{800}").value)

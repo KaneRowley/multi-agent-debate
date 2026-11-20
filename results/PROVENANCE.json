@@ -1,0 +1,69 @@
+{
+  "description": "Exact JSON exports from the preserved evaluation and summarisation archives. No inference or rescoring was used to create these copies.",
+  "archives": [
+    {
+      "name": "eval100-v3-review(2).zip",
+      "sha256": "15cacc6663b339319b64c310835606ee98f7debe316d6f2c7c9b5d8cd0055d40"
+    },
+    {
+      "name": "sakana-summarisation-followup-20261120T203759Z-1-001.zip",
+      "sha256": "7a248978de273aaca2ce862d253e22586939b0edb47c0468e90309c43e4f6631"
+    }
+  ],
+  "files": [
+    {
+      "path": "results/eval100/summary.json",
+      "source_archive_sha256": "15cacc6663b339319b64c310835606ee98f7debe316d6f2c7c9b5d8cd0055d40",
+      "source_member": "eval100-analysis-v3/summary.json",
+      "sha256": "1bd2b8293930d80280a2b16c5230e0f100c107e1dc33b9a78a8e4f038a0229bb"
+    },
+    {
+      "path": "results/eval100/questions.json",
+      "source_archive_sha256": "15cacc6663b339319b64c310835606ee98f7debe316d6f2c7c9b5d8cd0055d40",
+      "source_member": "eval100-analysis-v3/questions.json",
+      "sha256": "ad5a927cfd6b2f043c7f8ac33d3ef8de1a19edf4f18b2531195228c3b5bb5196"
+    },
+    {
+      "path": "results/eval100/run_metadata.json",
+      "source_archive_sha256": "15cacc6663b339319b64c310835606ee98f7debe316d6f2c7c9b5d8cd0055d40",
+      "source_member": "eval100/run.json",
+      "sha256": "4c8a102949fb126631ca2f088110d7a993424b81f96be4f6af75f19851892841"
+    },
+    {
+      "path": "results/summarisation/dev-pilot/comparison.json",
+      "source_archive_sha256": "7a248978de273aaca2ce862d253e22586939b0edb47c0468e90309c43e4f6631",
+      "source_member": "sakana-summarisation-followup/dev-pilot/comparison.json",
+      "sha256": "6742306be0774e5d0563f6484b1191a470ea79ae8c0082e77f99ea8fcb47811b"
+    },
+    {
+      "path": "results/summarisation/dev-pilot/run_metadata.json",
+      "source_archive_sha256": "7a248978de273aaca2ce862d253e22586939b0edb47c0468e90309c43e4f6631",
+      "source_member": "sakana-summarisation-followup/dev-pilot/run.json",
+      "sha256": "310bfce5ec4083941493a4bb9acaae77fd3ee51ce3903c5c6332cb24290d67b4"
+    },
+    {
+      "path": "results/summarisation/dev-pilot-v2/comparison.json",
+      "source_archive_sha256": "7a248978de273aaca2ce862d253e22586939b0edb47c0468e90309c43e4f6631",
+      "source_member": "sakana-summarisation-followup/dev-pilot-v2/comparison.json",
+      "sha256": "94a42bbbe5d470fc20db3e06677329f2aaf7b0dcdd26d1c9f40252ef879fc521"
+    },
+    {
+      "path": "results/summarisation/dev-pilot-v2/run_metadata.json",
+      "source_archive_sha256": "7a248978de273aaca2ce862d253e22586939b0edb47c0468e90309c43e4f6631",
+      "source_member": "sakana-summarisation-followup/dev-pilot-v2/run.json",
+      "sha256": "fe27fe9e07953dd2d66fb5431ccbb7899d18edc53d2c1f91f3c65551403760a3"
+    },
+    {
+      "path": "results/summarisation/dev-pilot-per-answer/comparison.json",
+      "source_archive_sha256": "7a248978de273aaca2ce862d253e22586939b0edb47c0468e90309c43e4f6631",
+      "source_member": "sakana-summarisation-followup/dev-pilot-per-answer/comparison.json",
+      "sha256": "db20ad616b642a5516664fff785ef16514a362c5c86f8d702cf63370122f00d8"
+    },
+    {
+      "path": "results/summarisation/dev-pilot-per-answer/run_metadata.json",
+      "source_archive_sha256": "7a248978de273aaca2ce862d253e22586939b0edb47c0468e90309c43e4f6631",
+      "source_member": "sakana-summarisation-followup/dev-pilot-per-answer/run.json",
+      "sha256": "02257d65e1565db60cd0939b3d54fa5adadfd1ec9b4c981601a6ee29963d2a1d"
+    }
+  ]
+}

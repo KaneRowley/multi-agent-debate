@@ -1,0 +1,168 @@
+{
+  "summary": {
+    "parser_version": "explicit-rational-v3",
+    "question_repeat_pairs": 5,
+    "summarised_minus_full": 0,
+    "paired_question_bootstrap_95": [
+      0,
+      0
+    ],
+    "summary_token_limit_stops": 0,
+    "summary_calls_cost": {
+      "input_tokens": 6028,
+      "output_tokens": 202
+    },
+    "full": {
+      "accuracy": 1,
+      "corrected": 0,
+      "spoiled": 0,
+      "invalid_revision_answers": 0,
+      "revision_token_limit_stops": 0,
+      "revision_and_summary_seconds": 216.65188543699992,
+      "input_tokens": 20982,
+      "output_tokens": 9629
+    },
+    "summarised": {
+      "accuracy": 1,
+      "corrected": 0,
+      "spoiled": 0,
+      "invalid_revision_answers": 0,
+      "revision_token_limit_stops": 0,
+      "revision_and_summary_seconds": 287.6320600310014,
+      "input_tokens": 18215,
+      "output_tokens": 10974
+    }
+  },
+  "questions": [
+    {
+      "repeat": 0,
+      "question_id": "gsm8k/train/7288",
+      "initial_correct": true,
+      "full_correct": true,
+      "summarised_correct": true,
+      "full_cost": {
+        "input_tokens": 3798,
+        "output_tokens": 1937
+      },
+      "summarised_cost": {
+        "input_tokens": 3347,
+        "output_tokens": 1989
+      },
+      "summary_calls_cost": {
+        "input_tokens": 1086,
+        "output_tokens": 31
+      },
+      "full_invalid": 0,
+      "summarised_invalid": 0,
+      "full_token_limit": 0,
+      "summarised_token_limit": 0,
+      "summary_token_limit": 0,
+      "full_revision_seconds": 48.31801063899991,
+      "summarised_revision_seconds": 53.59395521599981
+    },
+    {
+      "repeat": 0,
+      "question_id": "gsm8k/train/2107",
+      "initial_correct": true,
+      "full_correct": true,
+      "summarised_correct": true,
+      "full_cost": {
+        "input_tokens": 5136,
+        "output_tokens": 2509
+      },
+      "summarised_cost": {
+        "input_tokens": 4353,
+        "output_tokens": 2595
+      },
+      "summary_calls_cost": {
+        "input_tokens": 1478,
+        "output_tokens": 62
+      },
+      "full_invalid": 0,
+      "summarised_invalid": 0,
+      "full_token_limit": 0,
+      "summarised_token_limit": 0,
+      "summary_token_limit": 0,
+      "full_revision_seconds": 57.472491616999946,
+      "summarised_revision_seconds": 63.743650521000745
+    },
+    {
+      "repeat": 0,
+      "question_id": "gsm8k/train/3825",
+      "initial_correct": true,
+      "full_correct": true,
+      "summarised_correct": true,
+      "full_cost": {
+        "input_tokens": 3123,
+        "output_tokens": 1254
+      },
+      "summarised_cost": {
+        "input_tokens": 2865,
+        "output_tokens": 1820
+      },
+      "summary_calls_cost": {
+        "input_tokens": 885,
+        "output_tokens": 27
+      },
+      "full_invalid": 0,
+      "summarised_invalid": 0,
+      "full_token_limit": 0,
+      "summarised_token_limit": 0,
+      "summary_token_limit": 0,
+      "full_revision_seconds": 27.87183866700002,
+      "summarised_revision_seconds": 54.68496535600025
+    },
+    {
+      "repeat": 0,
+      "question_id": "gsm8k/train/6505",
+      "initial_correct": true,
+      "full_correct": true,
+      "summarised_correct": true,
+      "full_cost": {
+        "input_tokens": 4422,
+        "output_tokens": 1896
+      },
+      "summarised_cost": {
+        "input_tokens": 3772,
+        "output_tokens": 2115
+      },
+      "summary_calls_cost": {
+        "input_tokens": 1297,
+        "output_tokens": 39
+      },
+      "full_invalid": 0,
+      "summarised_invalid": 0,
+      "full_token_limit": 0,
+      "summarised_token_limit": 0,
+      "summary_token_limit": 0,
+      "full_revision_seconds": 38.84518551899987,
+      "summarised_revision_seconds": 49.96771496600013
+    },
+    {
+      "repeat": 0,
+      "question_id": "gsm8k/train/5837",
+      "initial_correct": true,
+      "full_correct": true,
+      "summarised_correct": true,
+      "full_cost": {
+        "input_tokens": 4503,
+        "output_tokens": 2033
+      },
+      "summarised_cost": {
+        "input_tokens": 3878,
+        "output_tokens": 2455
+      },
+      "summary_calls_cost": {
+        "input_tokens": 1282,
+        "output_tokens": 43
+      },
+      "full_invalid": 0,
+      "summarised_invalid": 0,
+      "full_token_limit": 0,
+      "summarised_token_limit": 0,
+      "summary_token_limit": 0,
+      "full_revision_seconds": 44.144358995000175,
+      "summarised_revision_seconds": 65.64177397200046
+    }
+  ]
+}

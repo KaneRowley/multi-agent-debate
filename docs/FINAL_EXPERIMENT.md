@@ -14,9 +14,18 @@ The final evaluation uses `explicit-rational-v3`, recovered from the working Col
 - 100 fixed test questions, three repeats, 6,000 records, 4,800 model calls and 1,200 reused records.
 - These archives are separate backups, not bundled into this repository change. Keep both in persistent storage and a second downloaded copy.
 
+The final [summary](../results/eval100/summary.json),
+[question/round outcomes](../results/eval100/questions.json) and
+[run metadata](../results/eval100/run_metadata.json) are now included in the
+repository as exact exports from the results backup. Their source paths and
+SHA-256 checksums are recorded in [the export inventory](../results/PROVENANCE.json).
+The [results guide](../results/README.md) also links all three development
+summarisation comparisons. These analysis exports do not contain the raw model
+responses; the separate archive is still required to replay answer extraction.
+
 ## Validation
 
-All 28 offline unit tests pass. Offline replay of all 6,000 saved records reproduces all 1,800 v3 question/round outcomes exactly, including predictions, vote statuses, and correctness. No model was loaded and no inference ran. One continuation test's obsolete expected parser label was updated from v2 to v3. New regression tests cover bounded parser introductions, conflicting answers, Drive fallback, existing-file preservation, cleanup, and error propagation.
+The preserved final evaluation implementation passed 28 offline unit tests. The current suite passes 30 tests, including the summarisation follow-up checks; parser regression tests are grouped in `tests/test_scoring.py`. Offline replay of all 6,000 saved records reproduces all 1,800 v3 question/round outcomes exactly, including predictions, vote statuses, and correctness. No model was loaded and no inference ran. One continuation test's obsolete expected parser label was updated from v2 to v3. New regression tests cover bounded parser introductions, conflicting answers, Drive fallback, existing-file preservation, cleanup, and error propagation.
 
 Drive fallback is simulated in the storage unit tests; no live Google Drive mount is available here. The preserved fallback assumes a single writer holding the run lock. Never remove `.active` while another process is writing; analysis into a given output directory must also have only one writer. Drive rename/durability behavior is provided by the mount and is not claimed to be a cross-client atomic no-overwrite guarantee.
 
