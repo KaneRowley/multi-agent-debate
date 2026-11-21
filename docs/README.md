@@ -1,15 +1,11 @@
 # Documentation
 
-Start with the [project overview and reproduction commands](../README.md).
+The [report](Multi_agent_Benchmark_Report_draft.pdf) explains the experiment, results and limitations. It is a working draft and still needs updating.
 
-| Document | Status and purpose |
+| Document | Contents |
 |---|---|
-| [Report (PDF, working draft)](Multi_agent_Benchmark_Report_draft.pdf) | Draft uploaded 21 November 2026; updates are still pending |
-| [Final experiment](FINAL_EXPERIMENT.md) | Current v3 results, exact model pin, archive checksums, reproduction and validation |
-| [Saved analysis results](../results/README.md) | Final evaluation summaries, question-level outcomes and all three summarisation pilot variants |
-| [Experiment plan](EXPERIMENT_PLAN.md) | Original design approved before evaluation; retained as a historical record |
-| [Development archive](archive/README.md) | Earlier implementation checks and smoke-to-development continuation evidence |
+| [Report (PDF, working draft)](Multi_agent_Benchmark_Report_draft.pdf) | Methods, results, discussion, figures and appendices |
+| [Reproducibility details](FINAL_EXPERIMENT.md) | Exact versions, backup checksums, scoring commands and validation |
+| [Saved results](../results/README.md) | Main evaluation outcomes and summarisation pilot comparisons |
 
-The original plan refers to parser v1 and work that had not yet run when it was written. The final experiment record identifies parser v3 as the implemented scoring version. Generation settings, prompts, manifests and voting were preserved. Current commands are in the main README; archived v1/v2 commands are not the instructions for final scoring.
-
-The exposure inventory remains at [`prior_test_exposure.json`](../prior_test_exposure.json), supplied through `--exposure` when preparing manifests. Executable files and manifests stay in their original locations. Historical audit files are kept in the archive with their contents unchanged.
+For setup and running instructions, start with the [main README](../README.md).

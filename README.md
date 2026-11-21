@@ -1,10 +1,10 @@
 # Multi-agent debate on GSM8K
 
-Does sharing worked solutions improve a language model's mathematical accuracy? This project compares a single agent, independent plurality voting, and multi-agent debate using **Qwen2.5-3B-Instruct** on **100 fixed GSM8K test questions**, with **three generation-seed repeats**.
+Multi-agent debate gives language models a chance to catch each other's mistakes. This project investigates whether increasing the number of agents or revision rounds improves mathematical accuracy. We compare a single agent, independent plurality voting and multi-agent debate using **Qwen2.5-3B-Instruct** on **100 fixed GSM8K test questions**, with **three generation-seed repeats**.
 
 **[Read the report (PDF, working draft)](docs/Multi_agent_Benchmark_Report_draft.pdf)** · [Inspect saved results](results/README.md) · [Score saved responses](#score-saved-responses-without-a-gpu) · [Run in Colab](#run-generation-in-colab)
 
-**Status:** the main evaluation is complete. The PDF is the draft uploaded on 21 November 2026 and still needs updates; it is not a final report. The peer-summarisation follow-up is documented separately below.
+The main evaluation is complete. The report is a working draft uploaded on 21 November 2026 and still needs updating. The summarisation follow-up is described separately below.
 
 ## Main findings
 
@@ -18,25 +18,25 @@ Mean accuracy across three repeats, using parser `explicit-rational-v3`:
 
 **Zero revisions means independent generation with plurality voting for multiple agents.** A revision lets each agent review the other agents' previous worked solutions while retaining its own conversation. A dash means that configuration was not evaluated.
 
-The primary comparison, three agents after two revisions versus their initial vote, improves by **2.00 percentage points**. Its paired question-bootstrap 95% interval is approximately **−0.33 to +4.67 points**, so the additional benefit of debate is not established conclusively. The three repeats use the same 100 questions, not 300 independent questions.
+Our primary comparison is three-agent debate after two revisions against its initial independent vote. Mean accuracy increased by **2.00 percentage points**, with a paired question-bootstrap 95% confidence interval of **−0.33 to +4.67 percentage points**. This leaves the additional benefit of debate uncertain. All three repeats use the same 100 questions.
 
-Five-agent independent voting achieved higher mean accuracy than three-agent debate after two revisions (92.67% versus 91.67%), using about one-sixth as many cumulative input and output tokens per question. The configurations were not compared at matched token budgets.
+Five-agent independent voting achieved slightly higher mean accuracy than three-agent debate after two revisions (92.67% versus 91.67%), using approximately one-sixth as many tokens. Among the configurations tested, it offered a better balance between accuracy and token usage. A comparison at matched token budgets would help assess whether debate is a better use of the additional computation.
 
 ## Results and report availability
 
-| Artifact | Available here |
+| File or results | Where to find them |
 |---|---|
 | Report | [Working-draft PDF](docs/Multi_agent_Benchmark_Report_draft.pdf), including methods, figures, detailed results and scoring appendices |
 | Main evaluation | [Summary](results/eval100/summary.json), [question/round outcomes](results/eval100/questions.json) and [run metadata](results/eval100/run_metadata.json) |
 | Summarisation development pilots | [Comparisons and settings for all three variants](results/README.md#summarisation-development-pilots) |
 | Provenance | [Export inventory and checksums](results/PROVENANCE.json) and [final experiment record](docs/FINAL_EXPERIMENT.md) |
-| Raw model responses | Preserved in separate backup archives; not bundled with the repository or available through a download link here |
+| Raw model responses | Saved in separate ZIP backups; no public download is currently linked here |
 
-The committed JSON files let readers inspect the reported outcomes and costs immediately. Replaying answer extraction requires the raw responses from `eval100-v3-review.zip`; the JSON analysis exports alone are insufficient. See the [results guide](results/README.md#raw-responses-and-reproduction) for the distinction between saved analyses and raw generations.
+The JSON files contain the reported scores, predictions and costs. To rerun answer extraction, the original responses from `eval100-v3-review.zip` are also needed. See the [results guide](results/README.md#raw-responses-and-reproduction) for details.
 
 ## Setup and offline checks
 
-Clone the repository and use Python 3.11 or later. For the offline checks and scoring, the Python standard library is sufficient; a GPU and the Colab dependencies are not required.
+Use Python 3.11 or later and clone the repository. The offline tests and scoring use the Python standard library and do not require a GPU.
 
 ```bash
 git clone https://github.com/KaneRowley/multi-agent-debate.git
@@ -49,7 +49,7 @@ Run the checks from the repository root:
 python -m unittest discover -s tests -v
 ```
 
-These standard-library tests do not download a model or run inference. The [validation record](docs/FINAL_EXPERIMENT.md#validation) distinguishes the preserved evaluation checks from the current follow-up suite. Archived offline replay reproduced all 1,800 saved v3 question/round outcomes.
+These tests do not download or run the model. An offline replay reproduced all 1,800 saved v3 question/round outcomes. The [validation record](docs/FINAL_EXPERIMENT.md#validation) gives further details.
 
 ## Score saved responses without a GPU
 
@@ -98,30 +98,30 @@ drive.mount("/content/drive")
 !python -u -m debate.runner --manifest manifests/evaluation.json --repeats 3 --output /content/drive/MyDrive/sakana-results/eval100-reproduction --evaluation-ready
 ```
 
-The first generation run downloads model weights. `--evaluation-ready` explicitly acknowledges that the design is frozen; the command above reproduces the existing experiment rather than requesting a new design search.
+The model weights are downloaded on the first run. `--evaluation-ready` confirms that the experimental setup has been fixed for evaluation.
 
 To continue a stopped run, repeat its exact command with `--resume` appended. Restore the same code, GPU/runtime settings and Drive mount first. Resume checks compatibility and skips completed records. Run only one writer per output directory. If a hard interruption leaves `.active`, confirm the old process has ended before removing that lock. Never delete completed response files to obtain different answers.
 
-Local `/content` storage is temporary. Keep both the final code and results ZIP backups outside it. Historical smoke-to-development continuation instructions are retained under [the archive](docs/archive/README.md); their v2 instructions describe an earlier stage, not the final scoring setup.
+Files under `/content` are temporary. Keep the code and results backups on Drive or download a separate copy.
 
 ## Method
 
 - **Model:** `Qwen/Qwen2.5-3B-Instruct`, pinned model/tokenizer revision; Transformers/PyTorch, FP16 on a Tesla T4.
 - **Generation:** temperature 0.7, top-p 0.9, top-k 0, at most 1,024 new tokens.
 - **Development:** 30 fixed GSM8K training questions. Evaluation uses 100 fixed test questions and seed roots 101, 202 and 303.
-- **Debate:** independent initial answers, then synchronous previous-round peer sharing. No judge, calculator, role specialization or agreement-based early stopping.
+- **Debate:** agents first answer independently, then revise using the other agents' responses from the previous round. Each agent keeps its own conversation history. All scheduled rounds are completed, even if agents agree. No judge or calculator is used.
 - **Scoring:** explicit numerical extraction, exact rational equivalence, and plurality voting. Invalid answers do not vote; tied votes abstain and score incorrect. Format compliance is measured separately.
-- **Selection:** evaluation IDs exclude 106 documented prior-exposure IDs. Additional download-only exposure and model pretraining contamination remain limitations; the sample is not claimed to be entirely untouched.
+- **Question selection:** 106 documented previously exposed test questions are excluded before selection. Questions are ordered by a deterministic hash and the first 100 eligible IDs are selected. This does not rule out other exposure or overlap with the model's pretraining data.
 
-This adapts [Du et al., Improving Factuality and Reasoning in Language Models through Multiagent Debate](https://arxiv.org/abs/2305.14325). Model, prompts, selection, scale and scoring differ from the published experiment. The [final experiment record](docs/FINAL_EXPERIMENT.md) gives the model pin, archive checksums and validation details.
+This experiment is based on [Du et al., Improving Factuality and Reasoning in Language Models through Multiagent Debate](https://arxiv.org/abs/2305.14325), using a different model, question selection, prompts and scoring setup. The [final experiment record](docs/FINAL_EXPERIMENT.md) gives the exact versions, backup checksums and validation details.
 
 ## Recorded experiment cost
 
-The main evaluation contains 6,000 saved response records: 4,800 actual model calls and 1,200 exact-request reuses. Recorded generation time totals about 19.53 T4 GPU-hours, excluding startup, file I/O and interruptions. This is the combined experiment cost, not the standalone cost of any one configuration. Standalone token comparisons include the original token usage of reused responses; see the [results guide](results/README.md) and the report's detailed cost table.
+The main evaluation saved 6,000 response records. Of these, 4,800 came from model calls and 1,200 reused responses to identical initial requests. Total recorded generation time was approximately 19.53 hours on a T4 GPU, excluding model loading, file I/O and interruptions. This measures the combined experiment workload. When comparing individual configurations, we include the original cost of any reused responses; see the [results guide](results/README.md) and the report's cost table.
 
-## Separate follow-up: peer summarisation
+## Summarisation follow-up
 
-The [three development pilots](results/README.md#summarisation-development-pilots) use five training questions and one repeat. All variants scored 5/5; reused per-answer summaries used 4.65% fewer total tokens but took 32.76% longer for summaries and revisions. These small development results do not establish accuracy preservation. Full 100-question follow-up results are not included in this repository yet and are separate from the main results above.
+Revision rounds substantially increased token usage, which motivated a [summarisation pilot](results/README.md#summarisation-development-pilots) on five development questions and one repeat. All three variants answered 5/5 correctly. Summarising each initial answer once and reusing it reduced total token usage by 4.65%, but summary and revision time increased by 32.76%. All five initial group predictions were already correct, so this pilot does not establish whether summarisation preserves accuracy or helps correct mistakes. Results from the full 100-question follow-up have not been added yet.
 
 The commands below use the default **per-recipient** summary procedure. To reproduce the per-answer variant, add `--summary-mode per-answer` and use a separate output folder. Preserve the chosen mode, token limit and other options when resuming.
 
@@ -155,11 +155,10 @@ For the pilot, append `--resume` to its command. If a hard stop leaves `.active`
 | `manifests/` | Fixed questions and separate evaluator references |
 | `tests/` | Offline software tests and response fixtures |
 | `results/` | Saved evaluation analyses, metadata and summarisation pilot comparisons |
-| `docs/` | Draft PDF report, final experiment record and original design plan |
-| `docs/archive/` | Historical development instructions and audits |
+| `docs/` | Draft report and reproducibility details |
 | `prior_test_exposure.json` | Exposure inventory used by dataset selection |
 | `requirements-colab.txt` | Pinned GPU runtime dependencies |
 
-## Development history
+## AI assistance
 
-The [documentation index](docs/README.md) separates the final experiment record from the [original design plan](docs/EXPERIMENT_PLAN.md) and [development archive](docs/archive/README.md). The plan and archived v1/v2 instructions record earlier stages; use the current instructions above for final v3 scoring. Development pilots are labelled separately from the 100-question main evaluation.
+ChatGPT, Codex and Claude were used to help with implementation, debugging, repository documentation, and drafting or editing parts of the report.
