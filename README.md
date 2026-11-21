@@ -30,9 +30,9 @@ Five-agent independent voting achieved slightly higher mean accuracy than three-
 | Main evaluation | [Summary](results/eval100/summary.json), [question/round outcomes](results/eval100/questions.json) and [run metadata](results/eval100/run_metadata.json) |
 | Summarisation development pilots | [Comparisons and settings for all three variants](results/README.md#summarisation-development-pilots) |
 | Provenance | [Export inventory and checksums](results/PROVENANCE.json) and [final experiment record](docs/FINAL_EXPERIMENT.md) |
-| Raw model responses | Saved in separate ZIP backups; no public download is currently linked here |
+| Raw model responses | [Download the main evaluation ZIP](https://github.com/KaneRowley/multi-agent-debate/releases/download/eval100-v3/eval100-v3-review.3.zip) from the [eval100-v3 release](https://github.com/KaneRowley/multi-agent-debate/releases/tag/eval100-v3) |
 
-The JSON files contain the reported scores, predictions and costs. To rerun answer extraction, the original responses from `eval100-v3-review.zip` are also needed. See the [results guide](results/README.md#raw-responses-and-reproduction) for details.
+The JSON files contain the reported scores, predictions and costs. To rerun answer extraction, [download the response ZIP](https://github.com/KaneRowley/multi-agent-debate/releases/download/eval100-v3/eval100-v3-review.3.zip). Its SHA-256 matches the preserved evaluation backup. See the [results guide](results/README.md#raw-responses-and-reproduction) for the checksum and extraction details.
 
 ## Setup and offline checks
 
@@ -53,9 +53,10 @@ These tests do not download or run the model. An offline replay reproduced all 1
 
 ## Score saved responses without a GPU
 
-Restore `eval100/` from the results backup into `runs/eval100/`, then run from the repository root:
+Download [`eval100-v3-review.3.zip`](https://github.com/KaneRowley/multi-agent-debate/releases/download/eval100-v3/eval100-v3-review.3.zip) into the repository root. Extract it and score the saved responses:
 
 ```bash
+python -m zipfile -e eval100-v3-review.3.zip runs
 python -m debate.analysis --run runs/eval100 --references manifests/evaluation_references.json --output analysis/eval100-v3
 ```
 
