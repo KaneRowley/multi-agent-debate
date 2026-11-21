@@ -53,13 +53,31 @@ correctness on these five cases, not proof of equivalence on new questions.
 
 ## Raw responses and reproduction
 
-The main raw generations are preserved in `eval100-v3-review.zip` (SHA-256 in
-the provenance inventory). Summarisation requests, responses and checkpoints
-are in the corresponding follow-up archive. These larger archives are not
-committed here; the JSON exports let readers inspect the reported results,
-but do not replace the raw responses for rerunning the parser.
+The main raw generations are available in the [eval100-v3 release](https://github.com/KaneRowley/multi-agent-debate/releases/tag/eval100-v3):
+[download `eval100-v3-review.3.zip`](https://github.com/KaneRowley/multi-agent-debate/releases/download/eval100-v3/eval100-v3-review.3.zip) (about 22 MB).
+The download has the same bytes as the original `eval100-v3-review.zip`
+backup, also recorded as `eval100-v3-review(2).zip` in [PROVENANCE.json](PROVENANCE.json).
+Its SHA-256 is:
 
-After obtaining and extracting the evaluation archive, follow
-[the offline scoring instructions](../docs/FINAL_EXPERIMENT.md#reproduce-scoring-without-inference).
+```text
+15cacc6663b339319b64c310835606ee98f7debe316d6f2c7c9b5d8cd0055d40
+```
+
+Download the ZIP into the repository root, then extract and rescore it:
+
+```bash
+python -m zipfile -e eval100-v3-review.3.zip runs
+python -m debate.analysis --run runs/eval100 --references manifests/evaluation_references.json --output analysis/eval100-v3
+```
+
+The restored `runs/eval100/` directory contains `run.json` and 6,000 JSON
+response records under `generations/`. Use a new analysis output directory
+if the destination already exists. The archive also contains saved analyses;
+`eval100-analysis-v3/` is the source of the reported main results.
+The replay reads saved responses and requires no GPU or model download.
+See [the offline scoring instructions](../docs/FINAL_EXPERIMENT.md#reproduce-scoring-without-inference).
+
+Summarisation requests, responses and checkpoints remain in a separate
+follow-up archive; this release contains the main evaluation backup.
 Archived paths under `/content/drive/` describe the original Colab environment;
 they are not locations that need to exist on a reader's machine.
