@@ -4,6 +4,7 @@ Start with the [project overview and reproduction commands](../README.md).
 
 | Document | Status and purpose |
 |---|---|
+| [Report (PDF, working draft)](Multi_agent_Benchmark_Report_draft.pdf) | Draft uploaded 21 November 2026; updates are still pending |
 | [Final experiment](FINAL_EXPERIMENT.md) | Current v3 results, exact model pin, archive checksums, reproduction and validation |
 | [Saved analysis results](../results/README.md) | Final evaluation summaries, question-level outcomes and all three summarisation pilot variants |
 | [Experiment plan](EXPERIMENT_PLAN.md) | Original design approved before evaluation; retained as a historical record |
