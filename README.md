@@ -8,13 +8,13 @@ Evaluation is complete. Initial voting improves on the single-agent baseline; de
 
 Mean accuracy across three repeats, using parser `explicit-rational-v3`:
 
-| Configuration | Initial voting | One revision | Two revisions |
+| Configuration | Zero revisions | One revision | Two revisions |
 |---|---:|---:|---:|
 | Single agent | 87.00% | — | — |
 | Three agents | 89.67% | 91.33% | 91.67% |
 | Five agents | 92.67% | 93.67% | — |
 
-**Round 0 is independent generation.** A revision lets each agent review the other agents' previous worked solutions while retaining its own conversation. The table reports every evaluated configuration; a dash means that configuration was not run.
+**Zero revisions means independent generation with plurality voting for multiple agents.** A revision lets each agent review the other agents' previous worked solutions while retaining its own conversation. The table reports every evaluated configuration that was run.
 
 The primary comparison, three agents after two revisions versus their initial vote, improves by **2.00 percentage points**. Its paired question-bootstrap 95% interval is approximately **−0.33 to +4.67 points**, so the additional benefit of debate is not established conclusively. The three repeats use the same 100 questions, not 300 independent questions.
 
