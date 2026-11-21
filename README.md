@@ -2,7 +2,7 @@
 
 Does sharing worked solutions improve a language model's mathematical accuracy? This project compares a single agent, independent plurality voting, and multi-agent debate using **Qwen2.5-3B-Instruct** on **100 fixed GSM8K test questions**, with **three generation-seed repeats**.
 
-The evaluation is complete. Initial voting improves on the single-agent baseline; debate adds a smaller average gain. The primary debate comparison remains uncertain on this sample.
+Evaluation is complete. Initial voting improves on the single-agent baseline; debate adds a smaller average gain. The primary debate comparison remains uncertain on this sample. More information is on the report pdf.
 
 ## Results
 
