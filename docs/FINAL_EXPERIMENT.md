@@ -7,16 +7,16 @@ This file records the versions, backups and validation for the main evaluation. 
 - Base commit: `f2571d547e4ea382e92c3fba5ace2f683f8e1f82`
 - Source backup: `final-code-v3.zip`
 - Source backup SHA-256: `e425dcb9d1ef6331250985a9937ae5007e42d473e38f6f5a8dae5f5a8aea6a80`
-- Results backup: `eval100-v3-review.zip`
+- Results backup: `eval100-v3-review.zip`; [download the published copy, `eval100-v3-review.3.zip`](https://github.com/KaneRowley/multi-agent-debate/releases/download/eval100-v3/eval100-v3-review.3.zip)
 - Results backup SHA-256: `15cacc6663b339319b64c310835606ee98f7debe316d6f2c7c9b5d8cd0055d40`
 - Model: `Qwen/Qwen2.5-3B-Instruct`
 - Model/tokenizer revision: `aa8e72537993ba99e69dfaafa59ed015b17504d1`
 - 100 fixed test questions, three repeats, 6,000 records, 4,800 model calls and 1,200 reused records.
-- These ZIP backups are stored separately from the repository. They are needed to restore the complete code and raw responses.
+- The raw-response backup is attached to the [eval100-v3 release](https://github.com/KaneRowley/multi-agent-debate/releases/tag/eval100-v3). Its checksum is unchanged despite the download filename. The source backup is retained separately.
 
 The repository includes the saved [summary](../results/eval100/summary.json), [question/round outcomes](../results/eval100/questions.json) and [run metadata](../results/eval100/run_metadata.json). These are unchanged copies from the results backup. Their original paths and SHA-256 checksums are recorded in the [export inventory](../results/PROVENANCE.json).
 
-The [results guide](../results/README.md) also links the three summarisation pilot comparisons. To rerun answer extraction, the original model responses from the separate ZIP backup are needed.
+The [results guide](../results/README.md) also links the three summarisation pilot comparisons. To rerun answer extraction, [download the response ZIP](https://github.com/KaneRowley/multi-agent-debate/releases/download/eval100-v3/eval100-v3-review.3.zip) and restore its `eval100/` directory.
 
 ## Validation
 
@@ -28,11 +28,17 @@ The Drive fallback was tested with simulated failures. These tests do not establ
 
 ## Reproduce scoring without inference
 
-With the archived `eval100` directory restored locally:
+Download the response ZIP into the repository root and restore `eval100/`:
+
+```bash
+python -m zipfile -e eval100-v3-review.3.zip runs
+```
+
+Then run from the repository root:
 
 ```bash
 python -m unittest discover -s tests -v
-python -m debate.analysis --run /path/to/eval100 --references manifests/evaluation_references.json --output /path/to/new-analysis-v3
+python -m debate.analysis --run runs/eval100 --references manifests/evaluation_references.json --output analysis/eval100-v3
 ```
 
 Use a new analysis output directory and keep the original responses. Scoring does not require a GPU or model download.
