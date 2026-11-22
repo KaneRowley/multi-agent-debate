@@ -26,6 +26,14 @@ Offline replay of all 6,000 saved response records reproduced all 1,800 v3 quest
 
 The Drive fallback was tested with simulated failures. These tests do not establish how a live Drive mount behaves. Use one writer per run or analysis output directory, and only remove an `.active` lock after confirming that the previous process has stopped.
 
+## Fresh-checkout verification (22 November 2026)
+
+A fresh clone of commit `f0b3031ba6cd74d91b1406860273a6ff18c229b0` passed all 30 offline unit tests. The public `eval100-v3` release ZIP was downloaded and its SHA-256 matched the recorded backup checksum. After extraction, the documented `debate.analysis` command reproduced `summary.json` and `questions.json` exactly as JSON, including all 1,800 question/round outcomes. The [main accuracy table](../results/eval100/accuracy_table.md) was regenerated from that analysis.
+
+These checks did not run the model or require a GPU. They verify offline software and saved-result reproduction; they do not constitute a new live test of model generation.
+
+The completed [per-answer summarisation comparison](../results/summarisation/eval100-per-answer/comparison.json) contains 300 unique question-repeat outcomes. Its accuracy and token totals were independently checked against its rows. The privately retained run metadata was checked for per-answer mode, a 256-token summary limit, and the pinned T4/model runtime. The baseline metadata, source-response and reference hashes match the preserved main evaluation, and the paired question-bootstrap interval was independently reproduced.
+
 ## Reproduce scoring without inference
 
 Download the response ZIP into the repository root and restore `eval100/`:

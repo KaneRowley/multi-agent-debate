@@ -1,15 +1,13 @@
 # Saved analysis results
 
-These are exact JSON exports from the preserved experiment archives. No model
-was run and no scores were changed when adding them to the repository.
-[PROVENANCE.json](PROVENANCE.json) records the source archive hashes, original
-member names and exported file hashes. Files named `run_metadata.json` are
-unchanged copies of their source `run.json` files.
+These are exact JSON exports from the preserved experiment archives and the completed summarisation follow-up on Drive. No model was run and no scores were changed when adding them to the repository.
+[PROVENANCE.json](PROVENANCE.json) records source archive hashes and member names, follow-up source descriptions, and exported file hashes. Existing pilot and main-evaluation files named `run_metadata.json` are unchanged copies of their source `run.json` files. The follow-up raw metadata is retained privately.
 
 ## Main evaluation
 
 | File | Contents |
 |---|---|
+| [Accuracy table](eval100/accuracy_table.md) | Main accuracy table regenerated from saved responses on 22 November 2026 |
 | [Summary](eval100/summary.json) | Final `explicit-rational-v3` analysis, per-seed accuracy, costs and primary bootstrap comparison |
 | [Question outcomes](eval100/questions.json) | All 1,800 scored question/round outcomes, including predictions, correctness, extraction statuses and voting statuses |
 | [Run metadata](eval100/run_metadata.json) | Fixed question selection, prompts, model revision, seed procedure and recorded runtime |
@@ -50,6 +48,32 @@ initial group predictions were correct, so these exploratory development
 results do not establish error-correction performance or general accuracy
 preservation. The saved bootstrap interval of `[0, 0]` reflects identical
 correctness on these five cases, not proof of equivalence on new questions.
+
+## Summarisation evaluation
+
+The [comparison](summarisation/eval100-per-answer/comparison.json) is an exact copy from the completed per-answer evaluation, finished on 22 November 2026. This compares three agents after one revision on the same 100 evaluation questions and three repeats. It reuses the initial answers and full-response first revisions; each initial answer is summarised once and shared with both other agents. Settings match the pinned main model and T4 runtime, with `--summary-mode per-answer` and a 256-token summary limit. Original run metadata is retained privately.
+
+| Measurement | Full responses | Per-answer summaries |
+|---|---:|---:|
+| Mean accuracy | 91.33% | 89.67% |
+| Correct question-repeat outcomes | 274/300 | 269/300 |
+| Total input + output tokens | 1,780,305 | 1,732,441 |
+| Mean total tokens per outcome | 5,934.35 | 5,774.80 |
+| Recorded summary and revision time (s) | 11,729.19 | 15,520.80 |
+| Invalid individual revision predictions | 16/900 | 75/900 |
+| Revision token-limit stops | 0 | 0 |
+
+Token totals include the original initial generations, summaries where applicable, and revisions. Times exclude shared initial generation, model loading, checkpoint I/O and interruptions. The 900 summaries also had no token-limit stops.
+
+This is a 2.69% reduction in total tokens and a 32.33% increase in recorded summary/revision time. The summarised-minus-full accuracy difference is −1.67 percentage points, with a paired question-bootstrap 95% interval of −4.00 to +0.33 points. Repeats are retained together when resampling questions. The interval does not establish equivalence or an accuracy reduction.
+
+| Base seed | Full-response accuracy (%) | Summarised accuracy (%) |
+|---|---:|---:|
+| 101 | 93.00 | 92.00 |
+| 202 | 91.00 | 89.00 |
+| 303 | 90.00 | 88.00 |
+
+Follow-up raw checkpoints remain separate from the public main-evaluation archive. The published comparison supports inspection of outcomes and costs; it does not replace raw checkpoints for replaying the summarised-response parser. [Generation instructions](../README.md#generate-a-new-summarisation-evaluation) explicitly select `--summary-mode per-answer`.
 
 ## Raw responses and reproduction
 

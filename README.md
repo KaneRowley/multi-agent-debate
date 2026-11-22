@@ -2,9 +2,9 @@
 
 Multi-agent debate gives language models a chance to catch each other's mistakes. This project investigates whether increasing the number of agents or revision rounds improves mathematical accuracy. We compare a single agent, independent plurality voting and multi-agent debate using **Qwen2.5-3B-Instruct** on **100 fixed GSM8K test questions**, with **three generation-seed repeats**.
 
-**[Read the report (PDF, working draft)](docs/Multi_agent_Benchmark_Report_draft.pdf)** · [Inspect saved results](results/README.md) · [Score saved responses](#score-saved-responses-without-a-gpu) · [Run in Colab](#run-generation-in-colab)
+**[Read the report (PDF)](docs/Multi_agent_Benchmark_Report.pdf)** · [Inspect saved results](results/README.md) · [Score saved responses](#score-saved-responses-without-a-gpu) · [Run in Colab](#run-generation-in-colab)
 
-The main evaluation is complete. The report is a working draft uploaded on 21 November 2026 and still needs updating. The summarisation follow-up is described separately below.
+The main evaluation and per-answer summarisation follow-up are complete. The report was updated on 22 November 2026 and includes both. The saved outputs and offline reproduction instructions are linked below.
 
 ## Main findings
 
@@ -26,8 +26,9 @@ Five-agent independent voting achieved slightly higher mean accuracy than three-
 
 | File or results | Where to find them |
 |---|---|
-| Report | [Working-draft PDF](docs/Multi_agent_Benchmark_Report_draft.pdf), including methods, figures, detailed results and scoring appendices |
-| Main evaluation | [Summary](results/eval100/summary.json), [question/round outcomes](results/eval100/questions.json) and [run metadata](results/eval100/run_metadata.json) |
+| Report | [Report PDF](docs/Multi_agent_Benchmark_Report.pdf), including methods, figures, detailed results and scoring appendices |
+| Main evaluation | [Accuracy table](results/eval100/accuracy_table.md), [summary](results/eval100/summary.json), [question/round outcomes](results/eval100/questions.json) and [run metadata](results/eval100/run_metadata.json) |
+| Summarisation evaluation | [Comparison and all 300 outcomes](results/summarisation/eval100-per-answer/comparison.json), with [settings and per-seed results](results/README.md#summarisation-evaluation) |
 | Summarisation development pilots | [Comparisons and settings for all three variants](results/README.md#summarisation-development-pilots) |
 | Provenance | [Export inventory and checksums](results/PROVENANCE.json) and [final experiment record](docs/FINAL_EXPERIMENT.md) |
 | Raw model responses | [Download the main evaluation ZIP](https://github.com/KaneRowley/multi-agent-debate/releases/download/eval100-v3/eval100-v3-review.3.zip) from the [eval100-v3 release](https://github.com/KaneRowley/multi-agent-debate/releases/tag/eval100-v3) |
@@ -93,10 +94,11 @@ For a reproduction of the frozen evaluation, mount Drive so completed records su
 ```python
 from google.colab import drive
 drive.mount("/content/drive")
+results_folder = input("Enter a new results folder on your mounted Drive: ").rstrip("/")
 ```
 
 ```python
-!python -u -m debate.runner --manifest manifests/evaluation.json --repeats 3 --output /content/drive/MyDrive/sakana-results/eval100-reproduction --evaluation-ready
+!python -u -m debate.runner --manifest manifests/evaluation.json --repeats 3 --output "{results_folder}" --evaluation-ready
 ```
 
 The model weights are downloaded on the first run. `--evaluation-ready` confirms that the experimental setup has been fixed for evaluation.
@@ -122,31 +124,51 @@ The main evaluation saved 6,000 response records. Of these, 4,800 came from mode
 
 ## Summarisation follow-up
 
-Revision rounds substantially increased token usage, which motivated a [summarisation pilot](results/README.md#summarisation-development-pilots) on five development questions and one repeat. All three variants answered 5/5 correctly. Summarising each initial answer once and reusing it reduced total token usage by 4.65%, but summary and revision time increased by 32.76%. All five initial group predictions were already correct, so this pilot does not establish whether summarisation preserves accuracy or helps correct mistakes. Results from the full 100-question follow-up have not been added yet.
+Revision rounds substantially increased token usage, which motivated a [summarisation pilot](results/README.md#summarisation-development-pilots) on five development questions and one repeat. Summarising each initial answer once and reusing it saved 4.65% of total tokens in that pilot, but its summary and revision time was 32.76% longer. All five initial group predictions were already correct.
 
-The commands below use the default **per-recipient** summary procedure. To reproduce the per-answer variant, add `--summary-mode per-answer` and use a separate output folder. Preserve the chosen mode, token limit and other options when resuming.
+We then evaluated this **per-answer** procedure on the same 100 test questions and all three repeats. Each agent retains its own original solution and receives summaries of the other two agents' initial responses. Summaries have a 256-token output limit. The comparison uses the saved first full-response revisions from the three-agent main evaluation.
 
-Use the T4 setup above and mount Drive. Set `baseline` to the Drive folder containing the saved `dev30/` and `eval100/` run directories, each with `run.json` and `generations/`. Restore `runs/dev30/` from `dev30-review.zip` and `eval100/` from `eval100-v3-review.zip` if needed. Keep these runs in place. The follow-up compares one three-agent revision using summarised peer responses with the saved first revision, scored with `explicit-rational-v3`.
+| Measurement | Full-response debate | Per-answer summarised debate |
+|---|---:|---:|
+| Mean accuracy | 91.33% (274/300) | 89.67% (269/300) |
+| Mean total tokens per question-repeat outcome | 5,934.35 | 5,774.80 |
+| Mean summary and revision time (s) | 39.10 | 51.74 |
+| Invalid revision predictions | 16/900 | 75/900 |
+| Revision responses stopped by the token limit | 0 | 0 |
+
+Total tokens include the original initial generation, summaries where applicable, and revisions. Times exclude shared initial generation, model loading, checkpoint I/O and interruptions; they are summed recorded request times. No summary reached its token limit.
+
+Total token usage fell by **2.69%**, while recorded summary and revision time increased by **32.33%**. The accuracy difference was **−1.67 percentage points** (paired question-bootstrap 95% CI: **−4.00 to +0.33 points**). This does not establish an accuracy reduction or that accuracy was preserved. The observed small token saving came with longer generation time and more parsing failures.
+
+The [comparison file](results/summarisation/eval100-per-answer/comparison.json) contains every question-repeat outcome and the aggregate measurements. This used the same pinned model and T4 runtime as the main evaluation, per-answer summary mode, a 256-token summary limit and the same question selection. Follow-up raw summary/revision checkpoints and the original run metadata are retained privately and are not included in the public main-evaluation ZIP.
+
+### Generate a new summarisation evaluation
+
+These commands generate new summaries and revisions and require the T4 setup above. Reading the published comparison does not require a GPU. Download and extract the main-evaluation response ZIP as described above, then mount Drive and set a new follow-up output path:
 
 ```python
-baseline = "/content/drive/MyDrive/sakana-results"
-followup = "/content/drive/MyDrive/sakana-summarisation-followup"
+from google.colab import drive
+drive.mount("/content/drive")
+
+baseline = "/content/multi-agent-debate/runs"
+followup = input("Enter a new follow-up folder on your mounted Drive: ").rstrip("/")
 ```
 
-Run the five-question development pilot first, then the evaluation on the saved 100 questions and all three repeats:
+Use the explicit `--summary-mode per-answer` option to select the evaluated method:
 
 ```python
-!python -u -m debate.summarisation_followup --source "{baseline}/dev30" --references manifests/development_references.json --dev-limit 5 --output "{followup}/dev-pilot"
-!python -u -m debate.summarisation_followup --source "{baseline}/eval100" --references manifests/evaluation_references.json --output "{followup}/eval100"
+!python -u -m debate.summarisation_followup --source "{baseline}/eval100" --references manifests/evaluation_references.json --summary-mode per-answer --output "{followup}/eval100-per-answer"
 ```
 
-Resume with the same code, runtime, paths and options. For evaluation:
+To resume that run, keep the same code, runtime, paths and options:
 
 ```python
-!python -u -m debate.summarisation_followup --source "{baseline}/eval100" --references manifests/evaluation_references.json --output "{followup}/eval100" --resume
+!python -u -m debate.summarisation_followup --source "{baseline}/eval100" --references manifests/evaluation_references.json --summary-mode per-answer --output "{followup}/eval100-per-answer" --resume
 ```
 
-For the pilot, append `--resume` to its command. If a hard stop leaves `.active`, add `--clear-stale-lock` only after confirming the previous process has ended. Use one writer per output directory. Saved summaries and revisions are reused, and `comparison.json` is written after completion. Keep run files and checkpoints on Drive.
+The saved source path and file hashes are checked on resume. If a hard stop leaves `.active`, add `--clear-stale-lock` only after confirming the previous process has ended. Use one writer per output directory. Completed summaries and revisions are reused; only missing requests are generated. Keep checkpoints on Drive, and retain the local source archive so it can be restored at the same path after a runtime reset. `comparison.json` is written after completion.
+
+The earlier per-recipient pilots are documented in the [results guide](results/README.md#summarisation-development-pilots).
 
 ## Repository layout
 
@@ -155,8 +177,8 @@ For the pilot, append `--resume` to its command. If a hard stop leaves `.active`
 | `debate/` | Dataset selection, prompts, generation, runner, scoring and analysis |
 | `manifests/` | Fixed questions and separate evaluator references |
 | `tests/` | Offline software tests and response fixtures |
-| `results/` | Saved evaluation analyses, metadata and summarisation pilot comparisons |
-| `docs/` | Draft report and reproducibility details |
+| `results/` | Main evaluation analyses, regenerated accuracy table, and summarisation pilot/evaluation comparisons |
+| `docs/` | Report and reproducibility details |
 | `prior_test_exposure.json` | Exposure inventory used by dataset selection |
 | `requirements-colab.txt` | Pinned GPU runtime dependencies |
 

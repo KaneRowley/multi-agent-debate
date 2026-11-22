@@ -64,6 +64,12 @@
       "source_archive_sha256": "7a248978de273aaca2ce862d253e22586939b0edb47c0468e90309c43e4f6631",
       "source_member": "sakana-summarisation-followup/dev-pilot-per-answer/run.json",
       "sha256": "02257d65e1565db60cd0939b3d54fa5adadfd1ec9b4c981601a6ee29963d2a1d"
+    },
+    {
+      "path": "results/summarisation/eval100-per-answer/comparison.json",
+      "source_name": "comparison.json",
+      "sha256": "dd3526a9687b029c91daed8d14806218a52fb1a9d63f54486581afc4d856f627",
+      "source": "Completed per-answer evaluation, fetched on 22 November 2026"
     }
   ]
 }
